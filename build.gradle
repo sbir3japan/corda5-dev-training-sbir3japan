@@ -31,6 +31,8 @@ allprojects {
         cordaDbContainerName = "CSDEpostgresql"
         cordaBinDir = "${System.getProperty("user.home")}/.corda/corda5"
         cordaCliBinDir = "${System.getProperty("user.home")}/.corda/cli"
+<<<<<<< HEAD
+=======
         cpiUploadTimeout = cpiUploadDefault
         cordaProcessorTimeout = processorTimeout
     }
@@ -40,6 +42,7 @@ allprojects {
             languageVersion = of(VERSION_17.majorVersion.toInteger())
         }
         withSourcesJar()
+>>>>>>> main
     }
 
     // Declare the set of Java compiler options we need to build a CorDapp.
@@ -54,22 +57,6 @@ allprojects {
         // All dependencies are held in Maven Central
         mavenLocal()
         mavenCentral()
-
-        // R3 Internal repositories for dev
-        // Repository provides Corda 5 binaries that implement Corda-API.
-        // These will be made publicly available.
-        // Final location to be decided.
-        // Repository subject to change
-        maven {
-            url = "$artifactoryContextUrl/corda-os-maven"
-            authentication {
-                basic(BasicAuthentication)
-            }
-            credentials {
-                username = findProperty('cordaArtifactoryUsername') ?: System.getenv('CORDA_ARTIFACTORY_USERNAME')
-                password = findProperty('cordaArtifactoryPassword') ?: System.getenv('CORDA_ARTIFACTORY_PASSWORD')
-            }
-        }
     }
 
     tasks.withType(Test).configureEach {
