@@ -31,18 +31,6 @@ allprojects {
         cordaDbContainerName = "CSDEpostgresql"
         cordaBinDir = "${System.getProperty("user.home")}/.corda/corda5"
         cordaCliBinDir = "${System.getProperty("user.home")}/.corda/cli"
-<<<<<<< HEAD
-=======
-        cpiUploadTimeout = cpiUploadDefault
-        cordaProcessorTimeout = processorTimeout
-    }
-
-    java {
-        toolchain {
-            languageVersion = of(VERSION_17.majorVersion.toInteger())
-        }
-        withSourcesJar()
->>>>>>> main
     }
 
     // Declare the set of Java compiler options we need to build a CorDapp.
