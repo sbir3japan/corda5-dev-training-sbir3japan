@@ -12,6 +12,8 @@ import net.corda.v5.ledger.common.NotaryLookup;
 import net.corda.v5.ledger.utxo.UtxoLedgerService;
 import net.corda.v5.ledger.utxo.transaction.UtxoSignedTransaction;
 import net.corda.v5.membership.NotaryInfo;
+import org.jetbrains.annotations.NotNull;
+
 import java.security.PublicKey;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -21,19 +23,18 @@ import java.util.List;
 public class PackageApplesFlow implements ClientStartableFlow {
 
     @CordaInject
-    JsonMarshallingService jsonMarshallingService;
+    private JsonMarshallingService jsonMarshallingService;
 
     @CordaInject
-    MemberLookup memberLookup;
+    private MemberLookup memberLookup;
 
     @CordaInject
-    NotaryLookup notaryLookup;
+    private NotaryLookup notaryLookup;
 
     @CordaInject
-    UtxoLedgerService utxoLedgerService;
+    private UtxoLedgerService utxoLedgerService;
 
-    public PackageApplesFlow() {}
-
+    @NotNull
     @Suspendable
     @Override
     public String call(ClientRequestBody requestBody) {
