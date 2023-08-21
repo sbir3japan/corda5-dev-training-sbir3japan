@@ -11,9 +11,9 @@ public class RedeemApplesRequest {
     private UUID stampId;
 
     // The JSON Marshalling Service, which handles serialisation, needs this constructor.
-    public RedeemApplesRequest() {}
+    private RedeemApplesRequest() {}
 
-    public RedeemApplesRequest(MemberX500Name buyer, UUID stampId) {
+    private RedeemApplesRequest(MemberX500Name buyer, UUID stampId) {
         this.buyer = buyer;
         this.stampId = stampId;
     }

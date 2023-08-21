@@ -19,10 +19,13 @@ import net.corda.v5.ledger.utxo.StateAndRef;
 import net.corda.v5.ledger.utxo.UtxoLedgerService;
 import net.corda.v5.ledger.utxo.transaction.UtxoSignedTransaction;
 import net.corda.v5.membership.NotaryInfo;
+import org.jetbrains.annotations.NotNull;
+
 import java.security.PublicKey;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -35,22 +38,20 @@ import java.util.UUID;
 public class RedeemApplesFlow implements ClientStartableFlow {
 
     @CordaInject
-    FlowMessaging flowMessaging;
+    private FlowMessaging flowMessaging;
 
     @CordaInject
-    JsonMarshallingService jsonMarshallingService;
+    private JsonMarshallingService jsonMarshallingService;
 
     @CordaInject
-    MemberLookup memberLookup;
+    private MemberLookup memberLookup;
 
     @CordaInject
-    NotaryLookup notaryLookup;
+    private NotaryLookup notaryLookup;
 
     @CordaInject
-    UtxoLedgerService utxoLedgerService;
-
-    public RedeemApplesFlow() {}
-
+    private UtxoLedgerService utxoLedgerService;
+    @NotNull
     @Suspendable
     @Override
     public String call(ClientRequestBody requestBody) {
@@ -66,7 +67,7 @@ public class RedeemApplesFlow implements ClientStartableFlow {
 
         PublicKey buyer;
         try {
-            buyer = memberLookup.lookup(buyerName).getLedgerKeys().get(0);
+            buyer = Objects.requireNonNull(memberLookup.lookup(buyerName)).getLedgerKeys().get(0);
         } catch (Exception e) {
             throw new IllegalArgumentException("The buyer does not exist within the network");
         }

@@ -16,32 +16,34 @@ import net.corda.v5.ledger.common.NotaryLookup;
 import net.corda.v5.ledger.utxo.UtxoLedgerService;
 import net.corda.v5.ledger.utxo.transaction.UtxoSignedTransaction;
 import net.corda.v5.membership.NotaryInfo;
+import org.jetbrains.annotations.NotNull;
+
 import java.security.PublicKey;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @InitiatingFlow(protocol = "create-and-issue-apple-stamp")
 public class CreateAndIssueAppleStampFlow implements ClientStartableFlow {
 
     @CordaInject
-    public FlowMessaging flowMessaging;
+    private FlowMessaging flowMessaging;
 
     @CordaInject
-    public JsonMarshallingService jsonMarshallingService;
+    private JsonMarshallingService jsonMarshallingService;
 
     @CordaInject
-    public MemberLookup memberLookup;
+    private MemberLookup memberLookup;
 
     @CordaInject
-    NotaryLookup notaryLookup;
+    private NotaryLookup notaryLookup;
 
     @CordaInject
-    UtxoLedgerService utxoLedgerService;
+    private UtxoLedgerService utxoLedgerService;
 
-    public CreateAndIssueAppleStampFlow() {}
-
+    @NotNull
     @Suspendable
     @Override
     public String call(ClientRequestBody requestBody) {
@@ -56,7 +58,7 @@ public class CreateAndIssueAppleStampFlow implements ClientStartableFlow {
 
         PublicKey holder;
         try {
-            holder = memberLookup.lookup(holderName).getLedgerKeys().get(0);
+            holder = Objects.requireNonNull(memberLookup.lookup(holderName)).getLedgerKeys().get(0);
         } catch (Exception e) {
             throw new IllegalArgumentException(String.format("The holder %s does not exist within the network", holderName));
         }

@@ -11,7 +11,7 @@ import net.corda.v5.ledger.utxo.UtxoLedgerService;
 public class RedeemApplesResponderFlow implements ResponderFlow {
 
     @CordaInject
-    UtxoLedgerService utxoLedgerService;
+    private UtxoLedgerService utxoLedgerService;
 
     @Suspendable
     @Override
