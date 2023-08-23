@@ -1,6 +1,6 @@
 package com.r3.developers.apples.workflows;
 
-import com.r3.developers.apples.contracts.AppleStampContract;
+import com.r3.developers.apples.contracts.stamp.AppleStampContract;
 import com.r3.developers.apples.states.AppleStamp;
 import net.corda.v5.application.flows.ClientRequestBody;
 import net.corda.v5.application.flows.ClientStartableFlow;
