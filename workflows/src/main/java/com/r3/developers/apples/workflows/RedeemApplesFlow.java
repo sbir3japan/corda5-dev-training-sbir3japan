@@ -1,6 +1,6 @@
 package com.r3.developers.apples.workflows;
 
-import com.r3.developers.apples.contracts.AppleStampContract;
+import com.r3.developers.apples.contracts.stamp.AppleStampContract;
 import com.r3.developers.apples.contracts.BasketOfApplesContract;
 import com.r3.developers.apples.states.AppleStamp;
 import com.r3.developers.apples.states.BasketOfApples;

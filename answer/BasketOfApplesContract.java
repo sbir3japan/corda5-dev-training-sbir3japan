@@ -6,6 +6,7 @@ import net.corda.v5.base.exceptions.CordaRuntimeException;
 import net.corda.v5.ledger.utxo.Command;
 import net.corda.v5.ledger.utxo.Contract;
 import net.corda.v5.ledger.utxo.transaction.UtxoLedgerTransaction;
+
 public class BasketOfApplesContract implements Contract {
 
     public interface BasketOfApplesCommands extends Command {
@@ -47,10 +48,6 @@ public class BasketOfApplesContract implements Contract {
             /* Check the size of input state of AppleStamp.
             This smart contract can combine AppleStamp and BasketOfApples reimbursements.*/
             requireThat(transaction.getInputStates(AppleStamp.class).size() == 1,
-                    "This transaction should include one AppleStamp input state.");
-
-            Command appleStampCommand = transaction.getCommands(AppleStampContract.AppleCommands.class).get(0);
-            requireThat(appleStampCommand.getClass() == AppleStampContract.AppleCommands.Redeem.class,
                     "This transaction should include one AppleStamp input state.");
 
             /* Check the content of output state*/
