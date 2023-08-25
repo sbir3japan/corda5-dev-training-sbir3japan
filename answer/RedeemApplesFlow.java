@@ -110,7 +110,7 @@ public class RedeemApplesFlow implements ClientStartableFlow {
                 .addInputStates(appleStampStateAndRef.getRef(), basketOfApplesStampStateAndRef.getRef())
                 .addOutputState(updatedBasket)
                 .addCommand(new AppleStampContract.AppleCommands.Redeem())
-                .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.Redeem())
+                .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.Move())
                 .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
                 .addSignatories(List.of(myKey, buyer))
                 .toSignedTransaction();
