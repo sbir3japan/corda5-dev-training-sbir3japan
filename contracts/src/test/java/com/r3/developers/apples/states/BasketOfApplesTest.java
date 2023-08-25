@@ -125,7 +125,7 @@ class BasketOfApplesTest {
                 farmKeys.getPublic(), ownerKeys.getPublic(), 100);
 
         /* 鍵更新*/
-        BasketOfApples newOwnerBasketOfApples = basketOfApples.changeOwner(newOwnerKeys.getPublic());
+        BasketOfApples newOwnerBasketOfApples = basketOfApples.changeOwner(basketOfApples, newOwnerKeys.getPublic());
 
         /* Ownerの鍵が更新されていることを確認。 */
         assertEquals(newOwnerBasketOfApples.getOwner(), newOwnerKeys.getPublic());

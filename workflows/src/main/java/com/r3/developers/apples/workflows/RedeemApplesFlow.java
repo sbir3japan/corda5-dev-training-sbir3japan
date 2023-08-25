@@ -100,9 +100,9 @@ public class RedeemApplesFlow implements ClientStartableFlow {
             throw new IllegalArgumentException("There are no eligible baskets of apples");
         }
 
+        // Create Output state which changed its owner
         BasketOfApples originalBasketOfApples = basketOfApplesStampStateAndRef.getState().getContractState();
-
-        BasketOfApples updatedBasket = originalBasketOfApples.changeOwner(buyer);
+        BasketOfApples updatedBasket = originalBasketOfApples.changeOwner(originalBasketOfApples, buyer);
 
         //Create the transaction
         UtxoSignedTransaction transaction = utxoLedgerService.createTransactionBuilder()

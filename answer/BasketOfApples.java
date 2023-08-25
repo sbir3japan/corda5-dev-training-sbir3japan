@@ -57,7 +57,8 @@ public class BasketOfApples implements ContractState {
         return participants;
     }
 
-    public BasketOfApples changeOwner(PublicKey buyer) {
-        return new BasketOfApples(description, farm, buyer, weight);
+    public static BasketOfApples changeOwner(BasketOfApples originalBasket, PublicKey buyer) {
+        return new BasketOfApples(originalBasket.getDescription(), originalBasket.getFarm(), buyer,
+                originalBasket.getWeight());
     }
 }
