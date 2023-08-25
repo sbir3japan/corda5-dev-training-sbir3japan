@@ -13,7 +13,7 @@ public class BasketOfApplesContract implements Contract {
         class PackBasket implements BasketOfApplesCommands {
         }
 
-        class Redeem implements BasketOfApplesCommands {
+        class Move implements BasketOfApplesCommands {
         }
     }
 
@@ -40,10 +40,12 @@ public class BasketOfApplesContract implements Contract {
                 "The output BasketOfApples state should have non zero weight"
             );
         }
-        else if(basketOfApplesCommand.getClass() == BasketOfApplesCommands.Redeem.class) {
-            /* Check the size of input and output state */
+        else if(basketOfApplesCommand.getClass() == BasketOfApplesCommands.Move.class) {
+            /* Check the size of input and output state of BasketOfApples */
             requireThat(transaction.getInputStates(BasketOfApples.class).size() == 1,
                     "This transaction should include one BasketOfApples input state.");
+            requireThat(transaction.getOutputStates(BasketOfApples.class).size() == 1,
+                    "This transaction should include one BasketOfApples output state.");
 
             /* Check the size of input state of AppleStamp.
             This smart contract can combine AppleStamp and BasketOfApples reimbursements.*/
@@ -53,9 +55,14 @@ public class BasketOfApplesContract implements Contract {
             /* Check the content of output state*/
             AppleStamp inputAppleStamp = transaction.getInputStates(AppleStamp.class).get(0);
             BasketOfApples inputBasketOfApples = transaction.getInputStates(BasketOfApples.class).get(0);
+            BasketOfApples outputBasketOfApples = transaction.getOutputStates(BasketOfApples.class).get(0);
 
             requireThat(inputAppleStamp.getIssuer().equals(inputBasketOfApples.getFarm()),
                     "The issuer of the Apple stamp should be the producing farm of this basket of apple");
+
+            /* Check that the onwer has changed before and after the transaction. */
+            requireThat(!(inputBasketOfApples.getOwner().equals(outputBasketOfApples.getOwner())),
+                    "The owner of the input and output should be changed.");
         }
         else {
             throw new CordaRuntimeException("Incorrect type of BasketOfApples commands: " + transaction.getCommands().get(0).getClass());
