@@ -76,39 +76,32 @@ public class RedeemApplesFlow implements ClientStartableFlow {
         try {
             appleStampStateAndRef = utxoLedgerService
                     .findUnconsumedStatesByType(AppleStamp.class)
-                    .stream()
-                    .filter(stateAndRef -> stateAndRef.getState().getContractState().getId().equals(stampId))
+                    /* AppleStampの実装が終わったらコメントを外してください。 */
+//                    .stream()
+//                    .filter(stateAndRef -> stateAndRef.getState().getContractState().getId().equals(stampId))
                     .iterator()
                     .next();
         } catch (Exception e) {
             throw new IllegalArgumentException("There are no eligible basket of apples");
         }
 
-        StateAndRef<BasketOfApples> basketOfApplesStampStateAndRef;
+        StateAndRef<BasketOfApples> basketOfApplesStateAndRef;
         try {
-            basketOfApplesStampStateAndRef = utxoLedgerService
+            basketOfApplesStateAndRef = utxoLedgerService
                     .findUnconsumedStatesByType(BasketOfApples.class)
                     .stream()
-                    .filter(
-                            stateAndRef -> stateAndRef.getState().getContractState().getOwner().equals(
-                                    appleStampStateAndRef.getState().getContractState().getIssuer()
-                            )
-                    )
                     .iterator()
                     .next();
         } catch (Exception e) {
             throw new IllegalArgumentException("There are no eligible baskets of apples");
         }
 
-        BasketOfApples originalBasketOfApples = basketOfApplesStampStateAndRef.getState().getContractState();
-
-        BasketOfApples updatedBasket = originalBasketOfApples.changeOwner(buyer);
+        BasketOfApples originalBasketOfApples;
+        BasketOfApples updatedBasket;
 
         //Create the transaction
         UtxoSignedTransaction transaction = utxoLedgerService.createTransactionBuilder()
                 .setNotary(notaryInfo.getName())
-                .addInputStates(appleStampStateAndRef.getRef(), basketOfApplesStampStateAndRef.getRef())
-                .addOutputState(updatedBasket)
                 .addCommand(new AppleStampContract.AppleCommands.Redeem())
                 .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.Move())
                 .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))

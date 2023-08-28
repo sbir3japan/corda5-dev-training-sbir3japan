@@ -7,10 +7,7 @@ import net.corda.v5.ledger.utxo.ContractState;
 import org.jetbrains.annotations.NotNull;
 
 import java.security.PublicKey;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * AppleStamp:
@@ -19,43 +16,16 @@ import java.util.UUID;
 @BelongsToContract(AppleStampContract.class)
 public class AppleStamp implements ContractState {
 
-    private final UUID id;
-    private final String stampDesc;
-    private final PublicKey issuer;
-    private final PublicKey holder;
-    private final List<PublicKey> participants;
-
     @ConstructorForDeserialization
     public AppleStamp(UUID id,
                       String stampDesc,
                       PublicKey issuer,
                       PublicKey holder) {
-        this.id = id;
-        this.stampDesc = stampDesc;
-        this.issuer = issuer;
-        this.holder = holder;
-        this.participants = new ArrayList<>(Arrays.asList(issuer, holder));
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getStampDesc() {
-        return stampDesc;
-    }
-
-    public PublicKey getIssuer() {
-        return issuer;
-    }
-
-    public PublicKey getHolder() {
-        return holder;
     }
 
     @NotNull
     @Override
     public List<PublicKey> getParticipants() {
-        return participants;
+        return Collections.emptyList();
     }
 }

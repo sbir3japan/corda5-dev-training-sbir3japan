@@ -39,35 +39,21 @@ public class PackageApplesFlow implements ClientStartableFlow {
     @Override
     public String call(ClientRequestBody requestBody) {
 
-        PackageApplesRequest request = requestBody.getRequestBodyAs(jsonMarshallingService, PackageApplesRequest.class);
-        String appleDescription = request.getAppleDescription();
-        int weight = request.getWeight();
+        String appleDescription;
+        int weight;
 
-        NotaryInfo notary = notaryLookup.getNotaryServices().iterator().next();
-
-        PublicKey myKey = memberLookup.myInfo().getLedgerKeys().get(0);
-
+        NotaryInfo notary;
+        PublicKey myKey;
         // Building the output BasketOfApples state
-        BasketOfApples basket = new BasketOfApples(
-                appleDescription,
-                myKey,
-                myKey,
-                weight
-        );
+        BasketOfApples basket;
 
         // Create the transaction
-        UtxoSignedTransaction transaction = utxoLedgerService.createTransactionBuilder()
-                .setNotary(notary.getName())
-                .addOutputState(basket)
-                .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.PackBasket())
-                .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
-                .addSignatories(List.of(myKey))
-                .toSignedTransaction();
+        UtxoSignedTransaction transaction;
 
         try {
             // Record the transaction, no sessions are passed in as the transaction is only being
             // recorded locally
-            return utxoLedgerService.finalize(transaction, Collections.emptyList()).toString();
+            return null;
         } catch (Exception e) {
             return String.format("Flow failed, message: %s", e.getMessage());
         }

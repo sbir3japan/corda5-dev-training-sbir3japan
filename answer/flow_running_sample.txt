@@ -1,0 +1,36 @@
+# NodeおよびShortHashの紐づけ
+"CN=Alice, OU=Test Dept, O=R3, L=London, C=GB": [Aliceのholdingidentityshorthashes]
+"CN=Bob, OU=Test Dept, O=R3, L=London, C=GB": [Bobのholdingidentityshorthashes]
+"CN=Charlie, OU=Test Dept, O=R3, L=London, C=GB": [Charlieのholdingidentityshorthashes]
+"CN=Dave, OU=Test Dept, O=R3, L=London, C=GB": [Daveのholdingidentityshorthashes]
+
+# AppleStamp発行(任意のNode)
+{
+  "clientRequestId": "create-stamp-1",
+  "flowClassName": "com.r3.developers.apples.workflows.CreateAndIssueAppleStampFlow",
+  "requestBody": {
+    "stampDescription": "Can be exchanged for a single basket of apples",
+    "holder": "CN=Dave, OU=Test Dept, O=R3, L=London, C=GB"
+  }
+}
+# flowResultのUUIDをメモ: []
+
+# BasketOfApples発行(AppleStampと同じNode)
+{
+  "clientRequestId": "package-apples-1",
+  "flowClassName": "com.r3.developers.apples.workflows.PackageApplesFlow",
+  "requestBody": {
+    "appleDescription": "Golden delicious apples, picked on 11th May 2023",
+    "weight": 214
+  }
+}
+
+# BasketOfApples引換(AppleStampと同じNode)
+{
+  "clientRequestId": "redeem-apples-1",
+  "flowClassName": "com.r3.developers.apples.workflows.RedeemApplesFlow",
+  "requestBody": {
+    "buyer": "CN=Dave, OU=Test Dept, O=R3, L=London, C=GB",
+    "stampId": "flowResultのUUID>"
+  }
+}
