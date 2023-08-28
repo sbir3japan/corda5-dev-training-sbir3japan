@@ -9,7 +9,7 @@
   "clientRequestId": "create-stamp-1",
   "flowClassName": "com.r3.developers.apples.workflows.CreateAndIssueAppleStampFlow",
   "requestBody": {
-    "stampDescription": "Can be exchanged for a single basket of apples",
+    "stampDescription": "This stamp is for Dave. Can be exchanged for a single basket of apples.",
     "holder": "CN=Dave, OU=Test Dept, O=R3, L=London, C=GB"
   }
 }

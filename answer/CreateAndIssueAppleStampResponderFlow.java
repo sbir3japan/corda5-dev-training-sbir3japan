@@ -37,14 +37,6 @@ public class CreateAndIssueAppleStampResponderFlow implements ResponderFlow {
              * here) allows us to define the additional checks. If any of these conditions are not met,
              * we will not sign the transaction - even if the transaction and its signatures are contractually valid.
              */
-            PublicKey myPublicKey = memberLookup.myInfo().getLedgerKeys().get(0);
-            BasketOfApples outputStateBasketOfApples = _transaction.getOutputStates(BasketOfApples.class).get(0);
-            PublicKey outputStatePublicKey = outputStateBasketOfApples.getOwner();
-
-            if (myPublicKey != outputStatePublicKey){
-                throw new CordaRuntimeException("The Owner in Output State is not equal to my Node.");
-            }
-
         });
     }
 }
