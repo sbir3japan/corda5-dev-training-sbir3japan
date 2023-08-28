@@ -2,6 +2,7 @@ package com.r3.developers.apples.states;
 
 import com.r3.developers.apples.contracts.stamp.AppleStampContract;
 import net.corda.v5.base.annotations.ConstructorForDeserialization;
+import net.corda.v5.base.types.MemberX500Name;
 import net.corda.v5.ledger.utxo.BelongsToContract;
 import net.corda.v5.ledger.utxo.ContractState;
 import org.jetbrains.annotations.NotNull;
