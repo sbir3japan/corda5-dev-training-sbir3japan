@@ -39,20 +39,24 @@ public class PackageApplesFlow implements ClientStartableFlow {
     @Override
     public String call(ClientRequestBody requestBody) {
 
+        // 実装①-1
         String appleDescription;
         int weight;
 
+        // 実装①-2
         NotaryInfo notary;
         PublicKey myKey;
         // Building the output BasketOfApples state
         BasketOfApples basket;
 
         // Create the transaction
+        // 実装①-3
         UtxoSignedTransaction transaction;
 
         try {
             // Record the transaction, no sessions are passed in as the transaction is only being
             // recorded locally
+            // 実装①-4
             return null;
         } catch (Exception e) {
             return String.format("Flow failed, message: %s", e.getMessage());

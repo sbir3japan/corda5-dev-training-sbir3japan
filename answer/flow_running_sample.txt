@@ -32,6 +32,6 @@
   "flowClassName": "[BasketOfApples引換Flowのフルパス]",
   "requestBody": {
     "buyer": "CN=Dave, OU=Test Dept, O=R3, L=London, C=GB",
-    "stampId": "flowResultのUUID>"
+    "stampId": "<flowResultのUUID>"
   }
 }
