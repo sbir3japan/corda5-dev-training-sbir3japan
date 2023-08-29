@@ -4,7 +4,8 @@
 "CN=Charlie, OU=Test Dept, O=R3, L=London, C=GB": [Charlieのholdingidentityshorthashes]
 "CN=Dave, OU=Test Dept, O=R3, L=London, C=GB": [Daveのholdingidentityshorthashes]
 
-# AppleStamp発行(任意のNode)
+# AppleStamp発行(holder以外の任意のNode)
+# stampDescriptionにholderのCNと同じ文字列をどこかに含めてください。(ResponderFlowの挙動確認のため)
 {
   "clientRequestId": "create-stamp-1",
   "flowClassName": "com.r3.developers.apples.workflows.CreateAndIssueAppleStampFlow",
