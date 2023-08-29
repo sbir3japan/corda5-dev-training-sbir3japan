@@ -76,9 +76,8 @@ public class RedeemApplesFlow implements ClientStartableFlow {
         try {
             appleStampStateAndRef = utxoLedgerService
                     .findUnconsumedStatesByType(AppleStamp.class)
-                    /* AppleStampの実装が終わったらコメントを外してください。 */
-//                    .stream()
-//                    .filter(stateAndRef -> stateAndRef.getState().getContractState().getId().equals(stampId))
+                    .stream()
+                    .filter(stateAndRef -> stateAndRef.getState().getContractState().getId().equals(stampId))
                     .iterator()
                     .next();
         } catch (Exception e) {
@@ -90,18 +89,26 @@ public class RedeemApplesFlow implements ClientStartableFlow {
             basketOfApplesStateAndRef = utxoLedgerService
                     .findUnconsumedStatesByType(BasketOfApples.class)
                     .stream()
+                    .filter(
+                            stateAndRef -> stateAndRef.getState().getContractState().getOwner().equals(
+                                    appleStampStateAndRef.getState().getContractState().getIssuer()
+                            )
+                    )
                     .iterator()
                     .next();
         } catch (Exception e) {
             throw new IllegalArgumentException("There are no eligible baskets of apples");
         }
 
-        BasketOfApples originalBasketOfApples;
-        BasketOfApples updatedBasket;
+        BasketOfApples originalBasketOfApples = basketOfApplesStateAndRef.getState().getContractState();
+
+        BasketOfApples updatedBasket = originalBasketOfApples.changeOwner(buyer);
 
         //Create the transaction
         UtxoSignedTransaction transaction = utxoLedgerService.createTransactionBuilder()
                 .setNotary(notaryInfo.getName())
+                .addInputStates(appleStampStateAndRef.getRef(), basketOfApplesStateAndRef.getRef())
+                .addOutputState(updatedBasket)
                 .addCommand(new AppleStampContract.AppleCommands.Redeem())
                 .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.Move())
                 .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))

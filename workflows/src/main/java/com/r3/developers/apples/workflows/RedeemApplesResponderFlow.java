@@ -39,14 +39,14 @@ public class RedeemApplesResponderFlow implements ResponderFlow {
              * here) allows us to define the additional checks. If any of these conditions are not met,
              * we will not sign the transaction - even if the transaction and its signatures are contractually valid.
              */
-//            String commonNameOfMyNode = memberLookup.myInfo().getName().getCommonName();
-//            AppleStamp inputAppleStamp = _transaction.getInputStates(AppleStamp.class).get(0);
-//            String stampDescOfBasket = inputAppleStamp.getStampDesc();
-//
-//            if (!stampDescOfBasket.contains(commonNameOfMyNode)) {
-//                log.warn(WRONG_NODE_MESSAGE);
-//                throw new CordaRuntimeException(WRONG_NODE_MESSAGE);
-//            }
+            String commonNameOfMyNode = memberLookup.myInfo().getName().getCommonName();
+            AppleStamp inputAppleStamp = _transaction.getInputStates(AppleStamp.class).get(0);
+            String stampDescOfBasket = inputAppleStamp.getStampDesc();
+
+            if (!stampDescOfBasket.contains(commonNameOfMyNode)) {
+                log.warn(WRONG_NODE_MESSAGE);
+                throw new CordaRuntimeException(WRONG_NODE_MESSAGE);
+            }
         });
     }
 }
