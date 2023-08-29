@@ -8,7 +8,7 @@
 # stampDescriptionにholderのCNと同じ文字列をどこかに含めてください。(ResponderFlowの挙動確認のため)
 {
   "clientRequestId": "create-stamp-1",
-  "flowClassName": "com.r3.developers.apples.workflows.CreateAndIssueAppleStampFlow",
+  "flowClassName": "[AppleStamp発行Flowのフルパス]",
   "requestBody": {
     "stampDescription": "This stamp is for Dave. Can be exchanged for a single basket of apples.",
     "holder": "CN=Dave, OU=Test Dept, O=R3, L=London, C=GB"
@@ -19,7 +19,7 @@
 # BasketOfApples発行(AppleStampと同じNode)
 {
   "clientRequestId": "package-apples-1",
-  "flowClassName": "com.r3.developers.apples.workflows.PackageApplesFlow",
+  "flowClassName": "[BasketOfApples発行Flowのフルパス]",
   "requestBody": {
     "appleDescription": "Golden delicious apples, picked on 11th May 2023",
     "weight": 214
@@ -29,7 +29,7 @@
 # BasketOfApples引換(AppleStampと同じNode)
 {
   "clientRequestId": "redeem-apples-1",
-  "flowClassName": "com.r3.developers.apples.workflows.RedeemApplesFlow",
+  "flowClassName": "[BasketOfApples引換Flowのフルパス]",
   "requestBody": {
     "buyer": "CN=Dave, OU=Test Dept, O=R3, L=London, C=GB",
     "stampId": "flowResultのUUID>"
