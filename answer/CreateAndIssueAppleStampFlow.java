@@ -17,6 +17,8 @@ import net.corda.v5.ledger.utxo.UtxoLedgerService;
 import net.corda.v5.ledger.utxo.transaction.UtxoSignedTransaction;
 import net.corda.v5.membership.NotaryInfo;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.security.PublicKey;
 import java.time.Instant;
@@ -27,6 +29,8 @@ import java.util.UUID;
 
 @InitiatingFlow(protocol = "create-and-issue-apple-stamp")
 public class CreateAndIssueAppleStampFlow implements ClientStartableFlow {
+
+    private final static Logger log = LoggerFactory.getLogger(CreateAndIssueAppleStampFlow.class);
 
     @CordaInject
     private FlowMessaging flowMessaging;
@@ -47,6 +51,8 @@ public class CreateAndIssueAppleStampFlow implements ClientStartableFlow {
     @Suspendable
     @Override
     public String call(ClientRequestBody requestBody) {
+
+        log.info("CreateAndIssueAppleStampFlow started.");
 
         CreateAndIssueAppleStampRequest request = requestBody.getRequestBodyAs(jsonMarshallingService, CreateAndIssueAppleStampRequest.class);
         String stampDescription = request.getStampDescription();
@@ -84,6 +90,8 @@ public class CreateAndIssueAppleStampFlow implements ClientStartableFlow {
             // Send the transaction and state to the counterparty and let them sign it
             // Then notarise and record the transaction in both parties' vaults.
             utxoLedgerService.finalize(transaction, List.of(session));
+
+            log.info("CreateAndIssueAppleStampFlow completed.");
             return newStamp.getId().toString();
         } catch (Exception e) {
             return String.format("Flow failed, message: %s", e.getMessage());

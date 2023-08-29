@@ -84,9 +84,9 @@ public class RedeemApplesFlow implements ClientStartableFlow {
             throw new IllegalArgumentException("There are no eligible basket of apples");
         }
 
-        StateAndRef<BasketOfApples> basketOfApplesStampStateAndRef;
+        StateAndRef<BasketOfApples> basketOfApplesStateAndRef;
         try {
-            basketOfApplesStampStateAndRef = utxoLedgerService
+            basketOfApplesStateAndRef = utxoLedgerService
                     .findUnconsumedStatesByType(BasketOfApples.class)
                     .stream()
                     .filter(
@@ -100,14 +100,14 @@ public class RedeemApplesFlow implements ClientStartableFlow {
             throw new IllegalArgumentException("There are no eligible baskets of apples");
         }
 
-        BasketOfApples originalBasketOfApples = basketOfApplesStampStateAndRef.getState().getContractState();
+        BasketOfApples originalBasketOfApples = basketOfApplesStateAndRef.getState().getContractState();
 
         BasketOfApples updatedBasket = originalBasketOfApples.changeOwner(buyer);
 
         //Create the transaction
         UtxoSignedTransaction transaction = utxoLedgerService.createTransactionBuilder()
                 .setNotary(notaryInfo.getName())
-                .addInputStates(appleStampStateAndRef.getRef(), basketOfApplesStampStateAndRef.getRef())
+                .addInputStates(appleStampStateAndRef.getRef(), basketOfApplesStateAndRef.getRef())
                 .addOutputState(updatedBasket)
                 .addCommand(new AppleStampContract.AppleCommands.Redeem())
                 .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.Move())
