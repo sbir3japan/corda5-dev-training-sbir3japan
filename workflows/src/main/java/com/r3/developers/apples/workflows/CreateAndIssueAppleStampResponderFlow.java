@@ -1,18 +1,14 @@
 package com.r3.developers.apples.workflows;
 
-import com.r3.developers.apples.states.BasketOfApples;
 import net.corda.v5.application.flows.CordaInject;
 import net.corda.v5.application.flows.InitiatedBy;
 import net.corda.v5.application.flows.ResponderFlow;
 import net.corda.v5.application.membership.MemberLookup;
 import net.corda.v5.application.messaging.FlowSession;
 import net.corda.v5.base.annotations.Suspendable;
-import net.corda.v5.base.exceptions.CordaRuntimeException;
 import net.corda.v5.ledger.utxo.FinalizationResult;
 import net.corda.v5.ledger.utxo.UtxoLedgerService;
 import org.jetbrains.annotations.NotNull;
-
-import java.security.PublicKey;
 
 @InitiatedBy(protocol = "create-and-issue-apple-stamp")
 public class CreateAndIssueAppleStampResponderFlow implements ResponderFlow {

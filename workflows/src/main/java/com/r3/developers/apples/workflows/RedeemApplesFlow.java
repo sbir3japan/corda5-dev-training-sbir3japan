@@ -85,6 +85,7 @@ public class RedeemApplesFlow implements ClientStartableFlow {
             throw new IllegalArgumentException("There are no eligible basket of apples");
         }
 
+        // 実装②-1
         StateAndRef<BasketOfApples> basketOfApplesStateAndRef;
         try {
             basketOfApplesStateAndRef = utxoLedgerService
@@ -96,10 +97,12 @@ public class RedeemApplesFlow implements ClientStartableFlow {
             throw new IllegalArgumentException("There are no eligible baskets of apples");
         }
 
+        // 実装②-2
         BasketOfApples originalBasketOfApples;
         BasketOfApples updatedBasket;
 
         //Create the transaction
+        // 実装②-3
         UtxoSignedTransaction transaction = utxoLedgerService.createTransactionBuilder()
                 .setNotary(notaryInfo.getName())
                 .addCommand(new AppleStampContract.AppleCommands.Redeem())
