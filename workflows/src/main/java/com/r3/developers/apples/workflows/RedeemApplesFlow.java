@@ -76,9 +76,8 @@ public class RedeemApplesFlow implements ClientStartableFlow {
         try {
             appleStampStateAndRef = utxoLedgerService
                     .findUnconsumedStatesByType(AppleStamp.class)
-                    /* AppleStampの実装が終わったらコメントを外してください。 */
-//                    .stream()
-//                    .filter(stateAndRef -> stateAndRef.getState().getContractState().getId().equals(stampId))
+                    .stream()
+                    .filter(stateAndRef -> stateAndRef.getState().getContractState().getId().equals(stampId))
                     .iterator()
                     .next();
         } catch (Exception e) {
