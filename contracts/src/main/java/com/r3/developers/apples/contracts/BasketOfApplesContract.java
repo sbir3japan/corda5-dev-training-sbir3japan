@@ -50,6 +50,6 @@ public class BasketOfApplesContract implements Contract {
 
         //"The issuer of the Apple stamp should be the producing farm of this basket of apple"
         //"The owner of the input and output should be changed."
-        throw new CordaRuntimeException("Incorrect type of BasketOfApples commands: " + transaction.getCommands().get(0).getClass());
+        //throw new CordaRuntimeException("Incorrect type of BasketOfApples commands: " + transaction.getCommands().get(0).getClass());
     }
 }
