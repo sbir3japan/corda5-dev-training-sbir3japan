@@ -20,7 +20,8 @@ public class AppleStampVaultNamedQueryFactory implements VaultNamedQueryFactory 
                 .create(TOKEN_ISSUER_NAMED_QUERY)
                 .whereJson(
                         "WHERE visible_states.custom_representation -> 'com.r3.developers.apples.states.AppleStamp' " +
-                                "->> 'issuer' = :issuer"
+                                "->> 'issuer' = :issuer " +
+                                "AND visible_states.consumed IS NULL"
                 )
                 .register();
 
@@ -28,7 +29,8 @@ public class AppleStampVaultNamedQueryFactory implements VaultNamedQueryFactory 
                 .create(TOKEN_HOLDER_NAMED_QUERY)
                 .whereJson(
                         "WHERE visible_states.custom_representation -> 'com.r3.developers.apples.states.AppleStamp' " +
-                                "->> 'holder' = :holder"
+                                "->> 'holder' = :holder " +
+                                "AND visible_states.consumed IS NULL"
                 )
                 .register();
 

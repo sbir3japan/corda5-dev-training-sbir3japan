@@ -16,7 +16,8 @@ public class BasketOfApplesVaultNamedQueryFactory implements VaultNamedQueryFact
                 .create(TOKEN_FARM_NAMED_QUERY)
                 .whereJson(
                         "WHERE visible_states.custom_representation -> 'com.r3.developers.apples.states.BasketOfApples' " +
-                                "->> 'farm' = :farm"
+                                "->> 'farm' = :farm " +
+                                "AND visible_states.consumed IS NULL"
                 )
                 .register();
 
@@ -24,7 +25,8 @@ public class BasketOfApplesVaultNamedQueryFactory implements VaultNamedQueryFact
                 .create(TOKEN_OWNER_NAMED_QUERY)
                 .whereJson(
                         "WHERE visible_states.custom_representation -> 'com.r3.developers.apples.states.BasketOfApples' " +
-                                "->> 'owner' = :owner"
+                                "->> 'owner' = :owner " +
+                                "AND visible_states.consumed IS NULL"
                 )
                 .register();
 

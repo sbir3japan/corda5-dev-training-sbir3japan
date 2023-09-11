@@ -39,7 +39,7 @@ public class BasketOfApples implements ContractState {
     public String getDescription() {
         return description;
     }
-
+    
     public PublicKey getFarm() {
         return farm;
     }

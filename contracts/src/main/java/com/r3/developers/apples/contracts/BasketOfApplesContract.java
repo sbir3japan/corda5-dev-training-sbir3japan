@@ -20,7 +20,7 @@ public class BasketOfApplesContract implements Contract {
     @Override
     public void verify(UtxoLedgerTransaction transaction) {
 
-        Command basketOfApplesCommand = transaction.getCommands(BasketOfApplesContract.BasketOfApplesCommands.class).get(0);
+        Command basketOfApplesCommand = transaction.getCommands(BasketOfApplesCommands.class).get(0);
 
         if(basketOfApplesCommand.getClass() == BasketOfApplesCommands.PackBasket.class) {
 
@@ -37,7 +37,7 @@ public class BasketOfApplesContract implements Contract {
                     "The output BasketOfApples state should have clear description of Apple product");
 
             requireThat(output.getWeight() > 0 ,
-                    "The output BasketOfApples state should have non zero weight"
+                "The output BasketOfApples state should have non zero weight"
             );
         }
         else if(basketOfApplesCommand.getClass() == BasketOfApplesCommands.Move.class) {

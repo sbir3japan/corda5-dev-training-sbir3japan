@@ -59,6 +59,7 @@ public class RedeemApplesFlow implements ClientStartableFlow {
         RedeemApplesRequest request = requestBody.getRequestBodyAs(jsonMarshallingService, RedeemApplesRequest.class);
         MemberX500Name buyerName = request.getBuyer();
         UUID stampId = request.getStampId();
+        Integer timeWindowsSize = request.getTimeWindowsSize();
 
         // Retrieve the notaries public key (this will change)
         NotaryInfo notaryInfo = notaryLookup.getNotaryServices().iterator().next();
@@ -111,7 +112,7 @@ public class RedeemApplesFlow implements ClientStartableFlow {
                 .addOutputState(updatedBasket)
                 .addCommand(new AppleStampContract.AppleCommands.Redeem())
                 .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.Move())
-                .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
+                .setTimeWindowUntil(Instant.now().plus(timeWindowsSize.longValue(), ChronoUnit.SECONDS))
                 .addSignatories(List.of(myKey, buyer))
                 .toSignedTransaction();
 

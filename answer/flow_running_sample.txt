@@ -26,12 +26,49 @@
   }
 }
 
-# BasketOfApples引換(AppleStampと同じNode)
+# AppleStampクエリ(AppleStamp発行と同じNode)
+{
+  "clientRequestId": "query-stamp-1",
+  "flowClassName": "com.r3.developers.apples.workflows.GetAppleStampByHolderFlow",
+  "requestBody": {
+    "holder": "CN=Dave, OU=Test Dept, O=R3, L=London, C=GB"
+  }
+}
+
+# BasketOfApplesクエリ(BasketOfApples発行と同じNode、ownerに指定されたNode) → この時点では、ownerがまだ変わっていないことを確認
+{
+  "clientRequestId": "query-basket-1",
+  "flowClassName": "com.r3.developers.apples.workflows.GetMyBasketOfApplesFlow",
+  "requestBody": {
+  }
+}
+
+# BasketOfApples引換(AppleStampと同じNode) - timeWindowsSizeを極端に短くして意図的にタイムアウトを誘発する。
 {
   "clientRequestId": "redeem-apples-1",
   "flowClassName": "com.r3.developers.apples.workflows.RedeemApplesFlow",
   "requestBody": {
     "buyer": "CN=Dave, OU=Test Dept, O=R3, L=London, C=GB",
-    "stampId": "flowResultのUUID>"
+    "stampId": "flowResultのUUID>",
+    "timeWindowsSize": 1
+  }
+}
+
+# BasketOfApplesクエリ(BasketOfApples発行と同じNode、ownerに指定されたNode) → この時点では、ownerがまだ変わっていないことを確認
+{
+  "clientRequestId": "query-basket-1",
+  "flowClassName": "com.r3.developers.apples.workflows.GetMyBasketOfApplesFlow",
+  "requestBody": {
+  }
+}
+
+# BasketOfApples引換(AppleStampと同じNode) - timeWindowsSizeを適度な時間にして完了させる。
+{
+  "clientRequestId": "redeem-apples-2",
+  "flowClassName": "com.r3.developers.apples.workflows.RedeemApplesFlow",
+  "requestBody": {
+    "buyer": "CN=Dave, OU=Test Dept, O=R3, L=London, C=GB",
+    "stampId": "flowResultのUUID>",
+    "timeWindowsSize": 60
   }
 }

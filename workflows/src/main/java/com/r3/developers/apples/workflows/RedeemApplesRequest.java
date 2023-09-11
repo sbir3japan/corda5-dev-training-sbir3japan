@@ -10,12 +10,16 @@ public class RedeemApplesRequest {
 
     private UUID stampId;
 
+    private Integer timeWindowsSize;
+
+
     // The JSON Marshalling Service, which handles serialisation, needs this constructor.
     private RedeemApplesRequest() {}
 
-    private RedeemApplesRequest(MemberX500Name buyer, UUID stampId) {
+    private RedeemApplesRequest(MemberX500Name buyer, UUID stampId, Integer timeWindowsSize) {
         this.buyer = buyer;
         this.stampId = stampId;
+        this.timeWindowsSize = timeWindowsSize;
     }
 
     public MemberX500Name getBuyer() {
@@ -24,5 +28,9 @@ public class RedeemApplesRequest {
 
     public UUID getStampId() {
         return stampId;
+    }
+
+    public Integer getTimeWindowsSize() {
+        return timeWindowsSize;
     }
 }

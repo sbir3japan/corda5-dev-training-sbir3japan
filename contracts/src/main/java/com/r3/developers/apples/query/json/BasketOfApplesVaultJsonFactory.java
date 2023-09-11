@@ -22,42 +22,4 @@ public class BasketOfApplesVaultJsonFactory implements ContractStateVaultJsonFac
                 state.getWeight()
         ));
     }
-
-    static class BasketOfApplesJson {
-
-        private final String description;
-        private final String farm;
-        private final String owner;
-        private final Integer weight;
-
-        public BasketOfApplesJson(String description, String farm, String owner, Integer weight) {
-            this.description = description;
-            this.farm = farm;
-            this.owner = owner;
-            this.weight = weight;
-        }
-
-        @NotNull
-        public String getDescription() {
-            return description;
-        }
-
-        @NotNull
-        public String getFarm() {
-            return farm;
-        }
-
-        @NotNull
-        public String getOwner() {
-            return owner;
-        }
-
-        @NotNull
-        public Integer getWeight () {
-            return weight;
-        }
-
-    }
-
-
 }
