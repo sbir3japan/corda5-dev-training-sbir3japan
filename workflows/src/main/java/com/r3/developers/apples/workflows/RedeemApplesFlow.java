@@ -4,6 +4,7 @@ import com.r3.developers.apples.contracts.stamp.AppleStampContract;
 import com.r3.developers.apples.contracts.BasketOfApplesContract;
 import com.r3.developers.apples.states.AppleStamp;
 import com.r3.developers.apples.states.BasketOfApples;
+import com.r3.developers.apples.schema.Apple;
 import net.corda.v5.application.flows.ClientRequestBody;
 import net.corda.v5.application.flows.ClientStartableFlow;
 import net.corda.v5.application.flows.CordaInject;
@@ -12,18 +13,22 @@ import net.corda.v5.application.marshalling.JsonMarshallingService;
 import net.corda.v5.application.membership.MemberLookup;
 import net.corda.v5.application.messaging.FlowMessaging;
 import net.corda.v5.application.messaging.FlowSession;
+import net.corda.v5.application.persistence.PersistenceService;
 import net.corda.v5.base.annotations.Suspendable;
 import net.corda.v5.base.types.MemberX500Name;
 import net.corda.v5.ledger.common.NotaryLookup;
+import net.corda.v5.ledger.utxo.FinalizationResult;
 import net.corda.v5.ledger.utxo.StateAndRef;
 import net.corda.v5.ledger.utxo.UtxoLedgerService;
 import net.corda.v5.ledger.utxo.transaction.UtxoSignedTransaction;
+import net.corda.v5.membership.MemberInfo;
 import net.corda.v5.membership.NotaryInfo;
 import org.jetbrains.annotations.NotNull;
 
 import java.security.PublicKey;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -51,6 +56,10 @@ public class RedeemApplesFlow implements ClientStartableFlow {
 
     @CordaInject
     private UtxoLedgerService utxoLedgerService;
+
+    @CordaInject
+    private PersistenceService persistenceService;
+
     @NotNull
     @Suspendable
     @Override
@@ -121,7 +130,14 @@ public class RedeemApplesFlow implements ClientStartableFlow {
         try {
             // Send the transaction and state to the counterparty and let them sign it
             // Then notarise and record the transaction in both parties' vaults.
-            return utxoLedgerService.finalize(transaction, List.of(session)).toString();
+            FinalizationResult result = utxoLedgerService.finalize(transaction, List.of(session));
+
+            MemberX500Name owner = memberLookup.lookup(updatedBasket.getOwner()).getName();
+            /* Appleテーブルにデータを登録する。 */
+            Apple apple = new Apple(UUID.randomUUID(), Instant.now(), owner.toString(), updatedBasket.getWeight());
+            persistenceService.persist(apple);
+
+            return result.toString();
         } catch (Exception e) {
             return String.format("Flow failed, message: %s", e.getMessage());
         }
