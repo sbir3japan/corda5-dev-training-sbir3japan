@@ -61,6 +61,7 @@ public class CreateAndIssueAppleStampFlow implements ClientStartableFlow {
         NotaryInfo notaryInfo = notaryLookup.getNotaryServices().iterator().next();
 
         PublicKey issuer = memberLookup.myInfo().getLedgerKeys().get(0);
+        MemberX500Name issuerName = memberLookup.myInfo().getName();
 
         PublicKey holder;
         try {
@@ -92,6 +93,8 @@ public class CreateAndIssueAppleStampFlow implements ClientStartableFlow {
             utxoLedgerService.finalize(transaction, List.of(session));
 
             log.info("CreateAndIssueAppleStampFlow completed.");
+            log.info(issuerName.getCommonName() + " issued a voucher for apples to " + holderName.getCommonName() + ".");
+
             return newStamp.getId().toString();
         } catch (Exception e) {
             return String.format("Flow failed, message: %s", e.getMessage());
