@@ -46,13 +46,14 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
 
     // Optional but used by example tests.
-    testImplementation "org.mockito:mockito-core:$mockitoVersion"
-    testImplementation "org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion"
-    testImplementation "org.hamcrest:hamcrest-library:$hamcrestVersion"
+    cordaProvided "org.mockito:mockito-core:$mockitoVersion"
+    cordaProvided "org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion"
+    cordaProvided "org.hamcrest:hamcrest-library:$hamcrestVersion"
 
     // 本プロジェクトのlibに格納したテストツールのjarを解決
-    implementation(fileTree(dir: "$rootDir/libs", include: ['contract-testing-1.0.0-SNAPSHOT.jar']))
-    implementation(fileTree(dir: "$rootDir/libs", include: ['contract-testing-kotlin-1.0.0-SNAPSHOT.jar']))
+    testImplementation(fileTree(dir: "$rootDir/lib", include: ['contract-testing-1.0.0-SNAPSHOT.jar']))
+    testImplementation(fileTree(dir: "$rootDir/lib", include: ['contract-testing-kotlin-1.0.0-SNAPSHOT.jar']))
+
 }
 
 // The CordApp section.
