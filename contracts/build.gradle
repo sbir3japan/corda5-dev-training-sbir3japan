@@ -49,6 +49,10 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
     testImplementation "org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion"
     testImplementation "org.hamcrest:hamcrest-library:$hamcrestVersion"
+
+    // 本プロジェクトのlibに格納したテストツールのjarを解決
+    implementation(fileTree(dir: "$rootDir/libs", include: ['contract-testing-1.0.0-SNAPSHOT.jar']))
+    implementation(fileTree(dir: "$rootDir/libs", include: ['contract-testing-kotlin-1.0.0-SNAPSHOT.jar']))
 }
 
 // The CordApp section.
