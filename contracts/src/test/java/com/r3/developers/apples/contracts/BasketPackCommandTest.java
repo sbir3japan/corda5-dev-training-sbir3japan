@@ -10,10 +10,10 @@ import java.util.List;
 public class BasketPackCommandTest extends CommonCommandTest{
 
     /**
-     * Input Stateが含まれていないことを確認。
+     * BasketOfApplesのPackコマンドにおいて、TransactionのInput StateとしてBasketOfApplesが含まれてる場合、検証に失敗することを確認。
      */
     @Test
-    public void issueTransactionMustHaveNoInputs() {
+    public void packTransactionMustHaveNoInputs() {
 
         UtxoSignedTransaction transaction = getLedgerService()
                 .createTransactionBuilder()
@@ -21,7 +21,7 @@ public class BasketPackCommandTest extends CommonCommandTest{
                 .addOutputState(basketOfApplesOutputState)
                 .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.PackBasket())
                 .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
-                .addSignatories(List.of(farmKey, ownerKey))
+                .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
         // Validate the output transaction is successful
@@ -29,10 +29,10 @@ public class BasketPackCommandTest extends CommonCommandTest{
     }
 
     /**
-     * Output Stateが一つだけ含まれていることを確認。
+     * BasketOfApplesのPackコマンドにおいて、TransactionのOutput StateとしてBasketOfApplesが複数含まれてる場合、検証に失敗することを確認。
      */
     @Test
-    public void issueTransactionMustHaveOneOutputs() {
+    public void packTransactionMustHaveOneOutputs() {
 
         UtxoSignedTransaction transaction = getLedgerService()
                 .createTransactionBuilder()
@@ -48,7 +48,7 @@ public class BasketPackCommandTest extends CommonCommandTest{
     }
 
     /**
-     * Output StateのDescriptionが空白でないことを確認
+     * BasketOfApplesのPackコマンドにおいて、BasketOfApplesのStampDescが空白の場合、検証に失敗することを確認。
      */
     @Test
     public void mustIncludeSomeCommentsInStampDesc() {
@@ -67,7 +67,7 @@ public class BasketPackCommandTest extends CommonCommandTest{
     }
 
     /**
-     * Output StateのWeight0より小さくないことを確認
+     * BasketOfApplesのPackコマンドにおいて、BasketOfApplesのWeightが0より小さい場合、検証に失敗することを確認。
      */
     @Test
     public void checkWeightIsGreaterThanZero() {
@@ -95,7 +95,7 @@ public class BasketPackCommandTest extends CommonCommandTest{
                 .addOutputState(basketOfApplesOutputState)
                 .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.PackBasket())
                 .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
-                .addSignatories(List.of(farmKey, ownerKey))
+                .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
         // Validate the output transaction is successful

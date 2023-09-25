@@ -16,12 +16,17 @@ import java.util.UUID;
 public class CommonCommandTest extends ContractTest{
 
     /**
-     * テスト用のledger鍵を生成
+     * テスト用のledger鍵を生成。
+     * issuerKey: AppleStampのissuerとBasketOfApplesのfarmerの両方で使う。
+     * holderKeyKey: AppleStampのholderKeyとBasketOfApplesのownerの両方で使う。
+     * otherIssuerKey: issuerと同じでない鍵。AppleStampのissuerとBasketOfApplesのownerは同一であることが期待される。
+     * newHolderKey: BasketOfApplesの移転先の公開鍵
      * */
     PublicKey issuerKey = createSigningKey();
     PublicKey holderKey = createSigningKey();
-    PublicKey farmKey = createSigningKey();
-    PublicKey ownerKey = createSigningKey();
+    PublicKey otherIssuerKey = createSigningKey();
+    PublicKey newHolderKey = createSigningKey();
+
 
     AppleStamp appleStampOutputState = new AppleStamp(
             UUID.randomUUID(),
@@ -39,34 +44,47 @@ public class CommonCommandTest extends ContractTest{
 
     BasketOfApples basketOfApplesOutputState = new BasketOfApples(
             "This is the basket of apple for the test",
-            farmKey,
-            ownerKey,
+            issuerKey,
+            holderKey,
             100
     );
 
     BasketOfApples basketOfApplesBlankDesc = new BasketOfApples(
             "",
-            farmKey,
-            ownerKey,
+            issuerKey,
+            holderKey,
             100
     );
 
     BasketOfApples basketOfApplesInvalidWeight = new BasketOfApples(
             "This is the basket of apple for the test",
-            farmKey,
-            ownerKey,
+            issuerKey,
+            holderKey,
             -1
     );
 
+    BasketOfApples existingBasketOfApples = new BasketOfApples(
+            "This is the apple stamp that is already existed in the ledger",
+            issuerKey,
+            holderKey,
+            100
+    );
+
+    AppleStamp existingAppleState = new AppleStamp(
+            UUID.randomUUID(),
+            "This is the apple stamp that is already existed in the ledger",
+            issuerKey,
+            holderKey
+    );
+
+    AppleStamp otherIssuerAppleState = new AppleStamp(
+            UUID.randomUUID(),
+            "This is the apple stamp that is issued by a different issuer",
+            otherIssuerKey,
+            holderKey
+    );
 
     StateRef createAppleInputStateRef() {
-
-        AppleStamp existingAppleState = new AppleStamp(
-                UUID.randomUUID(),
-                "This is the apple stamp that is already existed in the ledger",
-                issuerKey,
-                holderKey
-        );
 
         UtxoSignedTransaction existingTransaction = getLedgerService()
                 .createTransactionBuilder()
@@ -80,14 +98,21 @@ public class CommonCommandTest extends ContractTest{
         return new StateRef(existingTransaction.getId(), 0);
     }
 
-    StateRef createBasketOfApplesStateRef() {
+    StateRef createOtherAppleInputStateRef() {
 
-        BasketOfApples existingBasketOfApples = new BasketOfApples(
-                "This is the apple stamp that is already existed in the ledger",
-                farmKey,
-                ownerKey,
-                100
-        );
+        UtxoSignedTransaction existingTransaction = getLedgerService()
+                .createTransactionBuilder()
+                .addOutputState(otherIssuerAppleState)
+                .addCommand(new AppleStampContract.AppleCommands.Issue())
+                .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
+                .addSignatories(List.of(issuerKey, holderKey))
+                .toSignedTransaction();
+
+        /* TxのOutput Stateが1つなので、indexを0でかえす */
+        return new StateRef(existingTransaction.getId(), 0);
+    }
+
+    StateRef createBasketOfApplesStateRef() {
 
         UtxoSignedTransaction existingTransaction = getLedgerService()
                 .createTransactionBuilder()

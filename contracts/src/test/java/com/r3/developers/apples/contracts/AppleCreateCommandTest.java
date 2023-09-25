@@ -11,7 +11,7 @@ import java.util.List;
 public class AppleCreateCommandTest extends CommonCommandTest{
 
     /**
-     * Input Stateが含まれていないことを確認。
+     * AppleStampのCreateコマンドにおいて、TransactionのInput StateとしてAppleStampが含まれてる場合、検証に失敗することを確認。
      */
     @Test
     public void issueTransactionMustHaveNoInputs() {
@@ -30,7 +30,7 @@ public class AppleCreateCommandTest extends CommonCommandTest{
     }
 
     /**
-     * Output Stateが一つだけ含まれていることを確認。
+     * AppleStampのCreateコマンドにおいて、TransactionのOutput StateとしてAppleStampが複数含まれてる場合、検証に失敗することを確認。
      */
     @Test
     public void issueTransactionMustHaveOneOutputs() {
@@ -49,7 +49,7 @@ public class AppleCreateCommandTest extends CommonCommandTest{
     }
 
     /**
-     * Output StateのStampDescが空白でないことを確認
+     * AppleStampのCreateコマンドにおいて、AppleStampのStampDescが空白の場合、検証に失敗することを確認。
      */
     @Test
     public void mustIncludeSomeCommentsInStampDesc() {

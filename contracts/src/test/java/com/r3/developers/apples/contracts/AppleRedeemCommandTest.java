@@ -11,10 +11,10 @@ import java.util.List;
 public class AppleRedeemCommandTest extends CommonCommandTest{
 
     /**
-     * Input Stateが含まれていないことを確認。
+     * AppleStampのRedeemコマンドにおいて、TransactionのInput StateとしてAppleStampが複数含まれてる場合、検証に失敗することを確認。
      */
     @Test
-    public void issueTransactionMustHaveOneInput() {
+    public void redeemTransactionMustHaveOneInput() {
 
         UtxoSignedTransaction transaction = getLedgerService()
                 .createTransactionBuilder()
@@ -30,10 +30,10 @@ public class AppleRedeemCommandTest extends CommonCommandTest{
     }
 
     /**
-     * Output Stateが一つだけ含まれていることを確認。
+     * AppleStampのRedeemコマンドにおいて、TransactionのOutput StateとしてAppleStampが含まれてる場合、検証に失敗することを確認。
      */
     @Test
-    public void issueTransactionMustHaveNoOutputs() {
+    public void redeemTransactionMustHaveNoOutputs() {
 
         UtxoSignedTransaction transaction = getLedgerService()
                 .createTransactionBuilder()
@@ -49,7 +49,7 @@ public class AppleRedeemCommandTest extends CommonCommandTest{
     }
 
     /**
-     * 署名者として、input stateのholderが含まれていることを確認。
+     * AppleStampのRedeemコマンドにおいて、Transactionの署名者として、input stateのholderが含まれていない場合、検証に失敗することを確認。
      */
     @Test
     public void mustIncludeSignOfHolder() {
