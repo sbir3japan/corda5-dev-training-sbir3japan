@@ -13,6 +13,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * CommonCommandTest: BasketOfApplesContractとAppleStampContractのテストコードの共通クラスおよびメソッドを定義。
+ * */
 public class CommonCommandTest extends ContractTest{
 
     /**

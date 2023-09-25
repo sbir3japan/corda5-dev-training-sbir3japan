@@ -8,6 +8,9 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+/**
+ * BasketMoveCommandTest: BasketOfApplesContractのMoveの検証をするためのテストコード。
+ * */
 public class BasketMoveCommandTest extends CommonCommandTest{
 
     /**
@@ -26,7 +29,6 @@ public class BasketMoveCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
         assertFailsWith(transaction, "Failed requirement: This transaction should include one BasketOfApples input state.");
     }
 
@@ -45,7 +47,6 @@ public class BasketMoveCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
         assertFailsWith(transaction, "Failed requirement: This transaction should include one BasketOfApples output state.");
     }
 
@@ -65,7 +66,6 @@ public class BasketMoveCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
         assertFailsWith(transaction, "Failed requirement: This transaction should include one AppleStamp input state.");
     }
 
@@ -86,7 +86,6 @@ public class BasketMoveCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
         assertFailsWith(transaction, "Failed requirement: The issuer of the Apple stamp should be the producing farm " +
                 "of this basket of apple");
     }
@@ -108,7 +107,6 @@ public class BasketMoveCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
         assertFailsWith(transaction, "Failed requirement: The owner of the input and output should be changed.");
     }
     /**
@@ -127,7 +125,6 @@ public class BasketMoveCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
         assertVerifies(transaction);
     }
 }

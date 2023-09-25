@@ -7,6 +7,9 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+/**
+* BasketPackCommandTest: BasketOfApplesContractのPackBasketの検証をするためのテストコード。
+* */
 public class BasketPackCommandTest extends CommonCommandTest{
 
     /**
@@ -24,7 +27,6 @@ public class BasketPackCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
         assertFailsWith(transaction, "Failed requirement: This transaction should not include an BasketOfApples input state.");
     }
 
@@ -43,7 +45,6 @@ public class BasketPackCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
         assertFailsWith(transaction, "Failed requirement: This transaction should include one BasketOfApples output state.");
     }
 
@@ -61,7 +62,6 @@ public class BasketPackCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
         assertFailsWith(transaction, "Failed requirement: The output BasketOfApples state should have " +
                 "clear description of Apple product");
     }
@@ -80,7 +80,6 @@ public class BasketPackCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
         assertFailsWith(transaction, "Failed requirement: The output BasketOfApples state should have " +
                 "non zero weight");
     }
@@ -98,7 +97,6 @@ public class BasketPackCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
         assertVerifies(transaction);
     }
 }

@@ -8,6 +8,9 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+/**
+ * AppleRedeemCommandTest: AppleStampContractのRedeemコマンドの検証をするためのテストコード。
+ * */
 public class AppleRedeemCommandTest extends CommonCommandTest{
 
     /**
@@ -25,7 +28,6 @@ public class AppleRedeemCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
         assertFailsWith(transaction, "Failed requirement: This transaction should include one AppleStamp input state.");
     }
 
@@ -44,7 +46,6 @@ public class AppleRedeemCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
         assertFailsWith(transaction, "Failed requirement: This transaction should not include an AppleStamp output state.");
     }
 
@@ -62,7 +63,6 @@ public class AppleRedeemCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
         assertFailsWith(transaction, "Failed requirement: The holder of the input AppleStamp state must " +
                 "be a signatory to the transaction.");
     }
@@ -81,7 +81,6 @@ public class AppleRedeemCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
         assertVerifies(transaction);
     }
 

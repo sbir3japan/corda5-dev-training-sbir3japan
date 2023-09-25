@@ -8,6 +8,9 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+/**
+ * AppleCreateCommandTest: AppleStampContractのIssueコマンドの検証をするためのテストコード。
+ * */
 public class AppleCreateCommandTest extends CommonCommandTest{
 
     /**
@@ -25,7 +28,6 @@ public class AppleCreateCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
         assertFailsWith(transaction, "Failed requirement: This transaction should not include an AppleStamp input state.");
     }
 
@@ -44,7 +46,6 @@ public class AppleCreateCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
         assertFailsWith(transaction, "Failed requirement: This transaction should include one AppleStamp output state.");
     }
 
@@ -62,7 +63,6 @@ public class AppleCreateCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
         assertFailsWith(transaction, "Failed requirement: The output AppleStamp state should have clear description " +
                 "of the type of redeemable goods");
     }
@@ -81,7 +81,23 @@ public class AppleCreateCommandTest extends CommonCommandTest{
                 .addSignatories(List.of(issuerKey, holderKey))
                 .toSignedTransaction();
 
-        // Validate the output transaction is successful
+        assertVerifies(transaction);
+    }
+
+    /**
+     * Transactionの中にInput StateもOutput Stateも含まれない場合、検証が失敗することを期待するが成功してしまう挙動確認。
+     * (ツールのバグの検証)
+     */
+    @Test
+    public void passTheVerificationEvenThoughNoStateInTransaction() {
+
+        UtxoSignedTransaction transaction = getLedgerService()
+                .createTransactionBuilder()
+                .addCommand(new AppleStampContract.AppleCommands.Issue())
+                .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
+                .addSignatories(List.of(issuerKey, holderKey))
+                .toSignedTransaction();
+
         assertVerifies(transaction);
     }
 }
