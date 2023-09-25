@@ -1,9 +1,6 @@
 package com.r3.developers.apples.contracts;
 
 import com.r3.developers.apples.contracts.stamp.AppleStampContract;
-import com.r3.developers.apples.states.BasketOfApples;
-import net.corda.v5.ledger.utxo.UtxoLedgerService;
-import net.corda.v5.ledger.utxo.transaction.UtxoLedgerTransaction;
 import net.corda.v5.ledger.utxo.transaction.UtxoSignedTransaction;
 import org.junit.jupiter.api.Test;
 
