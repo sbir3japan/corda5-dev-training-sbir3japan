@@ -46,9 +46,13 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
 
     // Optional but used by example tests.
-    testImplementation "org.mockito:mockito-core:$mockitoVersion"
-    testImplementation "org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion"
-    testImplementation "org.hamcrest:hamcrest-library:$hamcrestVersion"
+    cordaProvided "org.mockito:mockito-core:$mockitoVersion"
+    cordaProvided "org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion"
+    cordaProvided "org.hamcrest:hamcrest-library:$hamcrestVersion"
+
+    // Contract testing tool
+    testImplementation "com.r3.corda.ledger.utxo:contract-testing:$contractTestToolVersion"
+
 }
 
 // The CordApp section.
