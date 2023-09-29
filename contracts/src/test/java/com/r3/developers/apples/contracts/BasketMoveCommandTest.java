@@ -54,7 +54,7 @@ public class BasketMoveCommandTest extends CommonCommandTest{
      * BasketOfApplesのMoveコマンドにおいて、TransactionのInput StateとしてAppleStampStateが含まれていない場合、検証に失敗することを確認。
      */
 //    @Test
-//    public void mustIncludeSomeCommentsInStampDesc() {
+//    public void moveTransactionMustHaveOneAppleInputs() {
 //
 //        UtxoSignedTransaction transaction = getLedgerService()
 //                .createTransactionBuilder()
@@ -108,23 +108,5 @@ public class BasketMoveCommandTest extends CommonCommandTest{
 //                .toSignedTransaction();
 //
 //        assertFailsWith(transaction, "Failed requirement: The owner of the input and output should be changed.");
-//    }
-    /**
-     * 正しい情報を含むトランザクションが検証に成功することを確認
-     */
-//    @Test
-//    public void succeedToVerifyTransaction() {
-//
-//        UtxoSignedTransaction transaction = getLedgerService()
-//                .createTransactionBuilder()
-//                .addInputStates(createAppleInputStateRef(), createBasketOfApplesStateRef())
-//                .addOutputState(existingBasketOfApples.changeOwner(newHolderKey))
-//                .addCommand(new AppleStampContract.AppleCommands.Redeem())
-//                .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.Move())
-//                .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
-//                .addSignatories(List.of(issuerKey, holderKey))
-//                .toSignedTransaction();
-//
-//        assertVerifies(transaction);
 //    }
 }

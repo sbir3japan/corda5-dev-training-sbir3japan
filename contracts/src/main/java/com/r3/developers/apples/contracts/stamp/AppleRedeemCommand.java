@@ -21,7 +21,7 @@ public class AppleRedeemCommand extends AppleContractCommand{
         AppleStamp input = transaction.getInputStates(AppleStamp.class).get(0);
 
         requireThat(transaction.getSignatories().contains(input.getHolder()),
-                "The holder of the input AppleStamp state must be a signatory to the transaction");
+                "The holder of the input AppleStamp state must be a signatory to the transaction.");
 
     }
 
