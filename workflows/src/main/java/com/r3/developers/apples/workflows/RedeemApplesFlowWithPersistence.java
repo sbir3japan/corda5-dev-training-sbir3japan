@@ -65,7 +65,7 @@
 //    @Override
 //    public String call(ClientRequestBody requestBody) {
 //
-//        RedeemApplesRequest request = requestBody.getRequestBodyAs(jsonMarshallingService, RedeemApplesRequest.class);
+//        RedeemApplesRequestWithPersistence request = requestBody.getRequestBodyAs(jsonMarshallingService, RedeemApplesRequestWithPersistence.class);
 //        MemberX500Name buyerName = request.getBuyer();
 //        UUID stampId = request.getStampId();
 //        Integer timeWindowsSize = request.getTimeWindowsSize();
