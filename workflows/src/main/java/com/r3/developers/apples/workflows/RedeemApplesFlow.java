@@ -1,7 +1,7 @@
 package com.r3.developers.apples.workflows;
 
-import com.r3.developers.apples.contracts.stamp.AppleStampContract;
-import com.r3.developers.apples.contracts.BasketOfApplesContract;
+import com.r3.developers.apples.contracts.applestamp.AppleStampContract;
+import com.r3.developers.apples.contracts.basketofapples.BasketOfApplesContract;
 import com.r3.developers.apples.states.AppleStamp;
 import com.r3.developers.apples.states.BasketOfApples;
 import net.corda.v5.application.flows.ClientRequestBody;
@@ -18,9 +18,9 @@ import net.corda.v5.ledger.common.NotaryLookup;
 import net.corda.v5.ledger.utxo.StateAndRef;
 import net.corda.v5.ledger.utxo.UtxoLedgerService;
 import net.corda.v5.ledger.utxo.transaction.UtxoSignedTransaction;
+import net.corda.v5.membership.MemberInfo;
 import net.corda.v5.membership.NotaryInfo;
 import org.jetbrains.annotations.NotNull;
-
 import java.security.PublicKey;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -28,39 +28,38 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-
 /**
- * RedeemApplesFlow:
- * リンゴの引換券と箱詰めされたリンゴを交換するFlow。
- * 購入者は引換券を消費して、リンゴの所有者となる。
+ * AppleStamp と BasketOfApples のDvP決済をするFlow
  */
 @InitiatingFlow(protocol = "redeem-apples")
 public class RedeemApplesFlow implements ClientStartableFlow {
 
     @CordaInject
-    private FlowMessaging flowMessaging;
+    FlowMessaging flowMessaging;
 
     @CordaInject
-    private JsonMarshallingService jsonMarshallingService;
+    JsonMarshallingService jsonMarshallingService;
 
     @CordaInject
-    private MemberLookup memberLookup;
+    MemberLookup memberLookup;
 
     @CordaInject
-    private NotaryLookup notaryLookup;
+    NotaryLookup notaryLookup;
 
     @CordaInject
-    private UtxoLedgerService utxoLedgerService;
-    @NotNull
+    UtxoLedgerService utxoLedgerService;
+
+    public RedeemApplesFlow() {}
+
     @Suspendable
     @Override
-    public String call(ClientRequestBody requestBody) {
+    @NotNull
+    public String call(@NotNull ClientRequestBody requestBody) {
 
         RedeemApplesRequest request = requestBody.getRequestBodyAs(jsonMarshallingService, RedeemApplesRequest.class);
         MemberX500Name buyerName = request.getBuyer();
         UUID stampId = request.getStampId();
 
-        // Retrieve the notaries public key (this will change)
         NotaryInfo notaryInfo = notaryLookup.getNotaryServices().iterator().next();
 
         PublicKey myKey = memberLookup.myInfo().getLedgerKeys().get(0);
@@ -72,10 +71,11 @@ public class RedeemApplesFlow implements ClientStartableFlow {
             throw new IllegalArgumentException("The buyer does not exist within the network");
         }
 
+        // InputState に含めるべき AppleStampState を構築しています.
         StateAndRef<AppleStamp> appleStampStateAndRef;
         try {
             appleStampStateAndRef = utxoLedgerService
-                    .findUnconsumedStatesByType(AppleStamp.class)
+                    .findUnconsumedStatesByExactType(AppleStamp.class, 100, Instant.now()).getResults()
                     .stream()
                     .filter(stateAndRef -> stateAndRef.getState().getContractState().getId().equals(stampId))
                     .iterator()
@@ -84,11 +84,11 @@ public class RedeemApplesFlow implements ClientStartableFlow {
             throw new IllegalArgumentException("There are no eligible basket of apples");
         }
 
-        // 実装②-1
-        StateAndRef<BasketOfApples> basketOfApplesStateAndRef;
+        // 実装1: InputState に含めるべき BasketOfApplesState を構築してください.
+        StateAndRef<BasketOfApples> basketOfApplesStampStateAndRef;
         try {
-            basketOfApplesStateAndRef = utxoLedgerService
-                    .findUnconsumedStatesByType(BasketOfApples.class)
+            basketOfApplesStampStateAndRef = utxoLedgerService
+                    .findUnconsumedStatesByExactType(BasketOfApples.class, 100, Instant.now()).getResults()
                     .stream()
                     .iterator()
                     .next();
@@ -96,16 +96,15 @@ public class RedeemApplesFlow implements ClientStartableFlow {
             throw new IllegalArgumentException("There are no eligible baskets of apples");
         }
 
-        // 実装②-2
+        // 実装2: InputState に含めるべき BasketOfApplesState から、OutputState になる BasketOfApples(ContractState) を作成してください.
         BasketOfApples originalBasketOfApples;
         BasketOfApples updatedBasket;
 
-        //Create the transaction
-        // 実装②-3
+        // 実装3: Transaction に InputState と OutputState を設定してください.
         UtxoSignedTransaction transaction = utxoLedgerService.createTransactionBuilder()
                 .setNotary(notaryInfo.getName())
                 .addCommand(new AppleStampContract.AppleCommands.Redeem())
-                .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.Move())
+                .addCommand(new BasketOfApplesContract.Move())
                 .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
                 .addSignatories(List.of(myKey, buyer))
                 .toSignedTransaction();
@@ -113,9 +112,7 @@ public class RedeemApplesFlow implements ClientStartableFlow {
         FlowSession session = flowMessaging.initiateFlow(buyerName);
 
         try {
-            // Send the transaction and state to the counterparty and let them sign it
-            // Then notarise and record the transaction in both parties' vaults.
-            return utxoLedgerService.finalize(transaction, List.of(session)).toString();
+            return utxoLedgerService.finalize(transaction, List.of(session)).getTransaction().getId().toString();
         } catch (Exception e) {
             return String.format("Flow failed, message: %s", e.getMessage());
         }

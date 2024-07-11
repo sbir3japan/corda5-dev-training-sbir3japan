@@ -1,109 +1,106 @@
 package com.r3.developers.apples.states;
 
-import com.r3.developers.apples.TestUtils;
+import com.r3.developers.apples.TestKeyUtils;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
-import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
-import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AppleStampTest {
+public class AppleStampTest {
+
+    private TestKeyUtils testKeyUtils = new TestKeyUtils();
 
     /**
-     * Task 1.
-     * TODO: Add an 'id' property of type {@link UUID} to the {@link AppleStamp} class to get this test to pass.
+     * AppleStamp test 1.
+     * AppleStampに 'id' というフィールドが存在することをチェックします.
      */
     @Test
     public void hasAppleStampIdFieldOfCorrectType() throws NoSuchFieldException {
-        // Does the id field exist?
+        // id フィールドを取得
         Field idField = AppleStamp.class.getDeclaredField("id");
-        // Is the id field of the correct type?
+        // フィールドの型を確認
         assertTrue(idField.getType().isAssignableFrom(UUID.class));
     }
 
     /**
-     * Task 2.
-     * TODO: Add an 'stampDesc' property of type {@link String} to the {@link AppleStamp} class to get this test to pass.
+     * AppleStamp test 2.
+     * AppleStampに 'stampDesc' というフィールドが存在することをチェックします.
      */
     @Test
     public void hasAppleStampStampDescFieldOfCorrectType() throws NoSuchFieldException {
-        // Does the stampDesc field exist?
+        // stampDesc フィールドを取得
         Field stampDescField = AppleStamp.class.getDeclaredField("stampDesc");
-        // Is the stampDesc field of the correct type?
+        // フィールドの型を確認
         assertTrue(stampDescField.getType().isAssignableFrom(String.class));
     }
 
     /**
-     * Task 3.
-     * TODO: Add an 'issuer' property of type {@link PublicKey} to the {@link AppleStamp} class to get this test to pass.
+     * AppleStamp test 3.
+     * AppleStampに 'issuer' というフィールドが存在することをチェックします.
      */
     @Test
     public void hasAppleStampIssuerFieldOfCorrectType() throws NoSuchFieldException {
-        // Does the issuer field exist?
+        // issuer フィールドを取得
         Field issuerField = AppleStamp.class.getDeclaredField("issuer");
-        // Is the issuer field of the correct type?
+        // フィールドの型を確認
         assertTrue(issuerField.getType().isAssignableFrom(PublicKey.class));
     }
 
     /**
-     * Task 4.
-     * TODO: Add an 'holder' property of type {@link PublicKey} to the {@link AppleStamp} class to get this test to pass.
+     * AppleStamp test 4.
+     * AppleStampに 'holder' というフィールドが存在することをチェックします.
      */
     @Test
     public void hasAppleStampHolderFieldOfCorrectType() throws NoSuchFieldException {
-        // Does the holder field exist?
+        // holder フィールドを取得
         Field holderField = AppleStamp.class.getDeclaredField("holder");
-        // Is the holder field of the correct type?
+        // フィールドの型を確認
         assertTrue(holderField.getType().isAssignableFrom(PublicKey.class));
     }
 
     /**
-     * Task 5.
-     * TODO: Check to see if the AppleState's issue field is included in the participants.
+     * AppleStamp test 5.
+     * getParticipants() を実行した際、結果にissuerが含まれていることをチェックします.
      */
     @Test
     void issuerIsParticipant() throws NoSuchAlgorithmException {
 
-        ArrayList<PublicKey> publicKeys = new ArrayList<>();
+        PublicKey issuerKeys = testKeyUtils.getIssuerKey();
+        PublicKey holderKeys = testKeyUtils.getHolderKey();
 
-        KeyPair issuerKeys = TestUtils.generateKey();
-        publicKeys.add(issuerKeys.getPublic());
+        AppleStamp appleStamp = new AppleStamp(
+                UUID.randomUUID(),
+                "This is a test stamp.",
+                issuerKeys,
+                holderKeys
+        );
 
-        KeyPair holderKeys = TestUtils.generateKey();
-        publicKeys.add(holderKeys.getPublic());
-
-        AppleStamp appleStamp = new AppleStamp(UUID.randomUUID(), "This is a test stamp.",
-                issuerKeys.getPublic(), holderKeys.getPublic());
-
-        /* リストに期待したオブジェクトが含まれない場合、indexOfメソッドは-1を返す. */
-        assertNotEquals(appleStamp.getParticipants().indexOf(issuerKeys.getPublic()), -1);
+        // リストに期待したオブジェクトが含まれない場合、indexOfメソッドは-1を返します.
+        assertNotEquals(appleStamp.getParticipants().indexOf(issuerKeys), -1);
     }
 
     /**
-     * Task 6.
-     * TODO: Check to see if the AppleState's holder field is included in the participants.
+     * AppleStamp test 6.
+     * getParticipants() を実行した際、結果にissuerが含まれていることをチェックします.
      */
     @Test
     void holderIsParticipant() throws NoSuchAlgorithmException {
 
-        ArrayList<PublicKey> publicKeys = new ArrayList<>();
+        PublicKey issuerKeys = testKeyUtils.getIssuerKey();
+        PublicKey holderKeys = testKeyUtils.getHolderKey();
 
-        KeyPair issuerKeys = TestUtils.generateKey();
-        publicKeys.add(issuerKeys.getPublic());
+        AppleStamp appleStamp = new AppleStamp(
+                UUID.randomUUID(),
+                "This is a test stamp.",
+                issuerKeys,
+                holderKeys
+        );
 
-        KeyPair holderKeys = TestUtils.generateKey();
-        publicKeys.add(holderKeys.getPublic());
-
-        AppleStamp appleStamp = new AppleStamp(UUID.randomUUID(), "This is a test stamp.",
-                issuerKeys.getPublic(), holderKeys.getPublic());
-
-        /* リストに期待したオブジェクトが含まれない場合、indexOfメソッドは-1を返す. */
-        assertNotEquals(appleStamp.getParticipants().indexOf(holderKeys.getPublic()), -1);
+        // リストに期待したオブジェクトが含まれない場合、indexOfメソッドは-1を返します.
+        assertNotEquals(appleStamp.getParticipants().indexOf(holderKeys), -1);
     }
-
 }

@@ -1,17 +1,20 @@
 package com.r3.developers.apples.contracts;
 
-import com.r3.developers.apples.contracts.stamp.AppleStampContract;
+import com.r3.developers.apples.TestKeyUtils;
+import com.r3.developers.apples.contracts.applestamp.AppleStampContract;
+import net.corda.v5.ledger.utxo.StateRef;
 import net.corda.v5.ledger.utxo.transaction.UtxoSignedTransaction;
 import org.junit.jupiter.api.Test;
 
+import java.security.PublicKey;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-/**
- * AppleRedeemCommandTest: AppleStampContractのRedeemコマンドの検証をするためのテストコード。
- * */
-public class AppleRedeemCommandTest extends CommonCommandTest{
+public class AppleRedeemCommandTest extends CommonCommandTest {
+
+    PublicKey aliceKey;
+    PublicKey daveKey;
 
     /**
      * AppleStampのRedeemコマンドにおいて、TransactionのInput StateとしてAppleStampが複数含まれてる場合、検証に失敗することを確認。
@@ -25,7 +28,7 @@ public class AppleRedeemCommandTest extends CommonCommandTest{
                 .addInputState(createAppleInputStateRef())
                 .addCommand(new AppleStampContract.AppleCommands.Redeem())
                 .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
-                .addSignatories(List.of(issuerKey, holderKey))
+                .addSignatories(List.of(aliceKey, daveKey))
                 .toSignedTransaction();
 
         assertFailsWith(transaction, "Failed requirement: This transaction should include one AppleStamp input state.");
@@ -43,7 +46,7 @@ public class AppleRedeemCommandTest extends CommonCommandTest{
                 .addInputState(createAppleInputStateRef())
                 .addOutputState(appleStampOutputState)
                 .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
-                .addSignatories(List.of(issuerKey, holderKey))
+                .addSignatories(List.of(aliceKey, daveKey))
                 .toSignedTransaction();
 
         assertFailsWith(transaction, "Failed requirement: This transaction should not include an AppleStamp output state.");
@@ -60,11 +63,10 @@ public class AppleRedeemCommandTest extends CommonCommandTest{
                 .addInputState(createAppleInputStateRef())
                 .addCommand(new AppleStampContract.AppleCommands.Redeem())
                 .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
-                .addSignatories(List.of(issuerKey))
+                .addSignatories(List.of(aliceKey))
                 .toSignedTransaction();
 
         assertFailsWith(transaction, "Failed requirement: The holder of the input AppleStamp state must " +
                 "be a signatory to the transaction.");
     }
-
 }

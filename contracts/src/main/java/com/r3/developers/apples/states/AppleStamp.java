@@ -1,61 +1,53 @@
 package com.r3.developers.apples.states;
 
-import com.r3.developers.apples.contracts.stamp.AppleStampContract;
+import com.r3.developers.apples.contracts.applestamp.AppleStampContract;
 import net.corda.v5.base.annotations.ConstructorForDeserialization;
 import net.corda.v5.ledger.utxo.BelongsToContract;
 import net.corda.v5.ledger.utxo.ContractState;
-import org.jetbrains.annotations.NotNull;
-
 import java.security.PublicKey;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
- * AppleStamp:
- * リンゴ引換券を表すState。リンゴの生産者が発行する。
+ * りんごの引換券を表すState
+ * id: 引換券ID
+ * stampDesc: 引換券の説明
+ * issuer: 引換券の発行者
+ * holder: 引換券を持つ人
  */
 @BelongsToContract(AppleStampContract.class)
 public class AppleStamp implements ContractState {
-
-    private final UUID id;
-    private final String stampDesc;
-    private final PublicKey issuer;
-    private final PublicKey holder;
-    private final List<PublicKey> participants;
+    private UUID id;
+    private String stampDesc;
+    private PublicKey issuer;
+    private PublicKey holder;
 
     @ConstructorForDeserialization
-    public AppleStamp(UUID id,
-                      String stampDesc,
-                      PublicKey issuer,
-                      PublicKey holder) {
+    public AppleStamp(UUID id, String stampDesc, PublicKey issuer, PublicKey holder) {
         this.id = id;
         this.stampDesc = stampDesc;
         this.issuer = issuer;
         this.holder = holder;
-        this.participants = new ArrayList<>(Arrays.asList(issuer, holder));
     }
 
     public UUID getId() {
-        return id;
+        return this.id;
     }
 
     public String getStampDesc() {
-        return stampDesc;
+        return this.stampDesc;
     }
 
     public PublicKey getIssuer() {
-        return issuer;
+        return this.issuer;
     }
 
     public PublicKey getHolder() {
-        return holder;
+        return this.holder;
     }
 
-    @NotNull
     @Override
     public List<PublicKey> getParticipants() {
-        return participants;
+        return new ArrayList<>(Arrays.asList(this.issuer, this.holder));
     }
+
 }

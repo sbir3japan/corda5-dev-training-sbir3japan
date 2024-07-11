@@ -1,75 +1,78 @@
 package com.r3.developers.apples.workflows;
 
-//import com.r3.developers.apples.contracts.BasketOfApplesContract;
-//import com.r3.developers.apples.states.BasketOfApples;
-//import net.corda.v5.application.flows.ClientRequestBody;
-//import net.corda.v5.application.flows.ClientStartableFlow;
-//import net.corda.v5.application.flows.CordaInject;
-//import net.corda.v5.application.marshalling.JsonMarshallingService;
-//import net.corda.v5.application.membership.MemberLookup;
-//import net.corda.v5.base.annotations.Suspendable;
-//import net.corda.v5.ledger.common.NotaryLookup;
-//import net.corda.v5.ledger.utxo.UtxoLedgerService;
-//import net.corda.v5.ledger.utxo.transaction.UtxoSignedTransaction;
-//import net.corda.v5.membership.NotaryInfo;
-//import org.jetbrains.annotations.NotNull;
+import com.r3.developers.apples.contracts.applestamp.AppleStampContract;
+import com.r3.developers.apples.contracts.basketofapples.BasketOfApplesContract;
+import com.r3.developers.apples.states.BasketOfApples;
+import net.corda.v5.application.flows.ClientRequestBody;
+import net.corda.v5.application.flows.ClientStartableFlow;
+import net.corda.v5.application.flows.CordaInject;
+import net.corda.v5.application.marshalling.JsonMarshallingService;
+import net.corda.v5.application.membership.MemberLookup;
+import net.corda.v5.base.annotations.Suspendable;
+import net.corda.v5.ledger.common.NotaryLookup;
+import net.corda.v5.ledger.utxo.UtxoLedgerService;
+import net.corda.v5.ledger.utxo.transaction.UtxoSignedTransaction;
+import net.corda.v5.membership.NotaryInfo;
+import org.jetbrains.annotations.NotNull;
+import java.security.PublicKey;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Collections;
+import java.util.List;
 
-//import java.security.PublicKey;
-//import java.time.Instant;
-//import java.time.temporal.ChronoUnit;
-//import java.util.Collections;
-//import java.util.List;
+/**
+ * farmer がりんごをバスケットに詰めるFlow
+ */
+public class PackageApplesFlow implements ClientStartableFlow {
 
-//public class PackageApplesFlow implements ClientStartableFlow {
-//
-//    @CordaInject
-//    private JsonMarshallingService jsonMarshallingService;
-//
-//    @CordaInject
-//    private MemberLookup memberLookup;
-//
-//    @CordaInject
-//    private NotaryLookup notaryLookup;
-//
-//    @CordaInject
-//    private UtxoLedgerService utxoLedgerService;
-//
-//    @NotNull
-//    @Suspendable
-//    @Override
-//    public String call(ClientRequestBody requestBody) {
-//
-//        PackageApplesRequest request = requestBody.getRequestBodyAs(jsonMarshallingService, PackageApplesRequest.class);
-//        String appleDescription = request.getAppleDescription();
-//        int weight = request.getWeight();
-//
-//        NotaryInfo notary = notaryLookup.getNotaryServices().iterator().next();
-//
-//        PublicKey myKey = memberLookup.myInfo().getLedgerKeys().get(0);
-//
-//        // Building the output BasketOfApples state
-//        BasketOfApples basket = new BasketOfApples(
-//                appleDescription,
-//                myKey,
-//                myKey,
-//                weight
-//        );
-//
-//        // Create the transaction
-//        UtxoSignedTransaction transaction = utxoLedgerService.createTransactionBuilder()
-//                .setNotary(notary.getName())
-//                .addOutputState(basket)
-//                .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.PackBasket())
-//                .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
-//                .addSignatories(List.of(myKey))
-//                .toSignedTransaction();
-//
-//        try {
-//            // Record the transaction, no sessions are passed in as the transaction is only being
-//            // recorded locally
-//            return utxoLedgerService.finalize(transaction, Collections.emptyList()).toString();
-//        } catch (Exception e) {
-//            return String.format("Flow failed, message: %s", e.getMessage());
-//        }
-//    }
-//}
+    @CordaInject
+    JsonMarshallingService jsonMarshallingService;
+
+    @CordaInject
+    MemberLookup memberLookup;
+
+    @CordaInject
+    NotaryLookup notaryLookup;
+
+    @CordaInject
+    UtxoLedgerService utxoLedgerService;
+
+    public PackageApplesFlow() {}
+
+    @Suspendable
+    @Override
+    @NotNull
+    public String call(@NotNull ClientRequestBody requestBody) {
+
+        PackageApplesRequest request = requestBody.getRequestBodyAs(jsonMarshallingService, PackageApplesRequest.class);
+        String appleDescription = request.getAppleDescription();
+        int weight = request.getWeight();
+
+        final NotaryInfo notaryInfo = notaryLookup.getNotaryServices().iterator().next();
+
+        PublicKey myKey = memberLookup.myInfo().getLedgerKeys().get(0);
+
+        // アウトプットになる BasketOfApples state を作成
+        BasketOfApples basket = new BasketOfApples(
+                appleDescription,
+                myKey,
+                myKey,
+                weight
+        );
+
+        // トランザクションの作成
+        UtxoSignedTransaction transaction = utxoLedgerService.createTransactionBuilder()
+                .setNotary(notaryInfo.getName())
+                .addOutputState(basket)
+                .addCommand(new BasketOfApplesContract.PackBasket())
+                .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
+                .addSignatories(List.of(myKey))
+                .toSignedTransaction();
+
+        try {
+            return utxoLedgerService.finalize(transaction, Collections.emptyList()).getTransaction().getId().toString();
+        } catch (Exception e) {
+            return String.format("Flow failed, message: %s", e.getMessage());
+        }
+    }
+}

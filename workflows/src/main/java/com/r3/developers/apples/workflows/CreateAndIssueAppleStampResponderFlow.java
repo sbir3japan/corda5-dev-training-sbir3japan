@@ -3,7 +3,6 @@ package com.r3.developers.apples.workflows;
 import net.corda.v5.application.flows.CordaInject;
 import net.corda.v5.application.flows.InitiatedBy;
 import net.corda.v5.application.flows.ResponderFlow;
-import net.corda.v5.application.membership.MemberLookup;
 import net.corda.v5.application.messaging.FlowSession;
 import net.corda.v5.base.annotations.Suspendable;
 import net.corda.v5.ledger.utxo.FinalizationResult;
@@ -14,11 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class CreateAndIssueAppleStampResponderFlow implements ResponderFlow {
 
     @CordaInject
-    private UtxoLedgerService utxoLedgerService;
-
-    @CordaInject
-    private MemberLookup memberLookup;
-
+    public UtxoLedgerService utxoLedgerService;
 
     @Override
     @Suspendable

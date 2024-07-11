@@ -1,9 +1,9 @@
 package com.r3.developers.apples.contracts;
 
 import com.r3.corda.ledger.utxo.testing.ContractTest;
-import com.r3.developers.apples.contracts.stamp.AppleStampContract;
+import com.r3.developers.apples.TestKeyUtils;
+import com.r3.developers.apples.contracts.applestamp.AppleStampContract;
 import com.r3.developers.apples.states.AppleStamp;
-import com.r3.developers.apples.states.BasketOfApples;
 import net.corda.v5.base.types.MemberX500Name;
 import net.corda.v5.ledger.utxo.StateRef;
 import net.corda.v5.ledger.utxo.transaction.UtxoSignedTransaction;
@@ -14,99 +14,67 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * CommonCommandTest: BasketOfApplesContractとAppleStampContractのテストコードの共通クラスおよびメソッドを定義。
- * */
-public class CommonCommandTest extends ContractTest{
+public class CommonCommandTest extends ContractTest {
 
-    MemberX500Name edwardName = MemberX500Name.parse("CN=Edward, OU=Test Dept, O=R3, L=London, C=GB");
-    PublicKey eveKey = createSigningKey();
+    PublicKey aliceKey;
+    PublicKey daveKey;
 
-
-
-    /**
-     * テスト用のledger鍵を生成。
-     * issuerKey: AppleStampのissuerとBasketOfApplesのfarmerの両方で使う。
-     * holderKeyKey: AppleStampのholderKeyとBasketOfApplesのownerの両方で使う。
-     * otherIssuerKey: issuerと同じでない鍵。AppleStampのissuerとBasketOfApplesのownerは同一であることが期待される。
-     * newHolderKey: BasketOfApplesの移転先の公開鍵
-     * */
-    PublicKey issuerKey = createSigningKey();
-    PublicKey holderKey = createSigningKey();
-    PublicKey otherIssuerKey = createSigningKey();
-    PublicKey newHolderKey = createSigningKey();
-
-
+    // 正常なAppleStampのOutputState
     AppleStamp appleStampOutputState = new AppleStamp(
             UUID.randomUUID(),
             "This is the apple stamp for the test",
-            issuerKey,
-            holderKey
+            aliceKey,
+            daveKey
     );
 
+    // AppleStampのDescriptionが空のOutputState
     AppleStamp appleStampBlankDesc = new AppleStamp(
             UUID.randomUUID(),
             "",
-            issuerKey,
-            holderKey
+            aliceKey,
+            daveKey
     );
 
-//    BasketOfApples basketOfApplesOutputState = new BasketOfApples(
-//            "This is the basket of apple for the test",
-//            issuerKey,
-//            holderKey,
-//            100
-//    );
-
-//    BasketOfApples basketOfApplesBlankDesc = new BasketOfApples(
-//            "",
-//            issuerKey,
-//            holderKey,
-//            100
-//    );
-
-//    BasketOfApples basketOfApplesInvalidWeight = new BasketOfApples(
-//            "This is the basket of apple for the test",
-//            issuerKey,
-//            holderKey,
-//            -1
-//    );
-
-//    BasketOfApples existingBasketOfApples = new BasketOfApples(
-//            "This is the apple stamp that is already existed in the ledger",
-//            issuerKey,
-//            holderKey,
-//            100
-//    );
-
-    AppleStamp existingAppleState = new AppleStamp(
+    // InputStateを作成するためのすでに存在するAppleStamp
+    private AppleStamp existingAppleState = new AppleStamp(
             UUID.randomUUID(),
             "This is the apple stamp that is already existed in the ledger",
-            issuerKey,
-            holderKey
+            aliceKey,
+            daveKey
     );
 
-    AppleStamp otherIssuerAppleState = new AppleStamp(
-            UUID.randomUUID(),
-            "This is the apple stamp that is issued by a different issuer",
-            otherIssuerKey,
-            holderKey
-    );
-
+    /**
+     * AppleStampのInputStateの構築をします。
+     * UtxoSignedTransactionを作成し、
+     * 生成したtxからtx構築時のinputState部分に含めるStateRefを生成します。
+     * @return inputState
+     */
     StateRef createAppleInputStateRef() {
-
         UtxoSignedTransaction existingTransaction = getLedgerService()
                 .createTransactionBuilder()
                 .addOutputState(existingAppleState)
                 .addCommand(new AppleStampContract.AppleCommands.Issue())
                 .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
-                .addSignatories(List.of(issuerKey, holderKey))
+                .addSignatories(List.of(aliceKey, daveKey))
                 .toSignedTransaction();
 
         /* TxのOutput Stateが1つなので、indexを0でかえす */
         return new StateRef(existingTransaction.getId(), 0);
     }
 
+    // IssuerがAliceではないAppleStampのOutputState
+    PublicKey otherIssuer = createSigningKey();
+    AppleStamp otherIssuerAppleState = new AppleStamp(
+            UUID.randomUUID(),
+            "This is the apple stamp that is issued by a different issuer",
+            otherIssuer,
+            daveKey
+    );
+
+    /**
+     * IssuerがAliceではないAppleStampのInputStateの構築をします。
+     * @return　inputState
+     */
     StateRef createOtherAppleInputStateRef() {
 
         UtxoSignedTransaction existingTransaction = getLedgerService()
@@ -114,13 +82,44 @@ public class CommonCommandTest extends ContractTest{
                 .addOutputState(otherIssuerAppleState)
                 .addCommand(new AppleStampContract.AppleCommands.Issue())
                 .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
-                .addSignatories(List.of(issuerKey, holderKey))
+                .addSignatories(List.of(aliceKey, daveKey))
                 .toSignedTransaction();
 
         /* TxのOutput Stateが1つなので、indexを0でかえす */
         return new StateRef(existingTransaction.getId(), 0);
     }
 
+    //    BasketOfApples basketOfApplesOutputState = new BasketOfApples(
+//            "This is the basket of apple for the test",
+//            aliceKey,
+//            aliceKey,
+//            100
+//    );
+
+//    BasketOfApples basketOfApplesBlankDesc = new BasketOfApples(
+//            "",
+//            aliceKey,
+//            aliceKey,
+//            100
+//    );
+
+//    BasketOfApples basketOfApplesInvalidWeight = new BasketOfApples(
+//            "This is the basket of apple for the test",
+//            aliceKey,
+//            aliceKey,
+//            -1
+//    );
+
+//    BasketOfApples existingBasketOfApples = new BasketOfApples(
+//            "This is the apple stamp that is already existed in the ledger",
+//            aliceKey,
+//            aliceKey,
+//            100
+//    );
+
+    /**
+     * BasketOfApplesのOutputStateの構築をします。
+     */
 //    StateRef createBasketOfApplesStateRef() {
 //
 //        UtxoSignedTransaction existingTransaction = getLedgerService()
@@ -128,7 +127,7 @@ public class CommonCommandTest extends ContractTest{
 //                .addOutputState(existingBasketOfApples)
 //                .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.PackBasket())
 //                .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
-//                .addSignatories(List.of(issuerKey, holderKey))
+//                .addSignatories(List.of(aliceKey, aliceKey))
 //                .toSignedTransaction();
 //
 //        /* TxのOutput Stateが1つなので、indexを0でかえす */

@@ -23,4 +23,5 @@ public class CreateAndIssueAppleStampRequest {
     public MemberX500Name getHolder() {
         return holder;
     }
+
 }

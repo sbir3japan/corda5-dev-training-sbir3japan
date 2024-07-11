@@ -1,139 +1,138 @@
 package com.r3.developers.apples.states;
 
-import com.r3.developers.apples.TestUtils;
+import com.r3.developers.apples.TestKeyUtils;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
 import java.lang.reflect.Field;
-import java.security.KeyPair;
+import java.lang.reflect.Method;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
-import java.util.ArrayList;
 
-class BasketOfApplesTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-//    /**
-//     * Task 1.
-//     * TODO: Add an 'description' property of type {@link String} to the {@link BasketOfApples} class to get this test to pass.
-//     */
-//    @Test
-//    public void hasBasketOfApplesDescriptionFieldOfCorrectType() throws NoSuchFieldException {
-//        // Does the description field exist?
-//        Field descriptionField = BasketOfApples.class.getDeclaredField("description");
-//        // Is the description field of the correct type?
-//        assertTrue(descriptionField.getType().isAssignableFrom(String.class));
-//    }
+public class BasketOfApplesTest {
 
-//    /**
-//     * Task 2.
-//     * TODO: Add an 'farm' property of type {@link PublicKey} to the {@link BasketOfApples} class to get this test to pass.
-//     */
-//    @Test
-//    public void hasBasketOfApplesFarmFieldOfCorrectType() throws NoSuchFieldException {
-//        // Does the farm field exist?
-//        Field farmField = BasketOfApples.class.getDeclaredField("farm");
-//        // Is the farm field of the correct type?
-//        assertTrue(farmField.getType().isAssignableFrom(PublicKey.class));
-//    }
+    private TestKeyUtils testKeyUtils = new TestKeyUtils();
 
-//    /**
-//     * Task 3.
-//     * TODO: Add an 'owner' property of type {@link PublicKey} to the {@link BasketOfApples} class to get this test to pass.
-//     */
-//    @Test
-//    public void hasBasketOfApplesOwnerFieldOfCorrectType() throws NoSuchFieldException {
-//        // Does the owner field exist?
-//        Field ownerField = BasketOfApples.class.getDeclaredField("owner");
-//        // Is the owner field of the correct type?
-//        assertTrue(ownerField.getType().isAssignableFrom(PublicKey.class));
-//    }
+    /**
+     * 1-1. フィールドとゲッター作成: description
+     */
+    @Test
+    public void hasBasketOfApplesDescriptionFieldOfCorrectType() throws NoSuchFieldException, NoSuchMethodException {
+        // description フィールドを取得
+        Field descriptionField = BasketOfApples.class.getDeclaredField("description");
+        // フィールドの型を確認
+        assertTrue(descriptionField.getType().isAssignableFrom(String.class));
 
-//    /**
-//     * Task 4.
-//     * TODO: Add an 'weight' property of type {@link Integer} to the {@link BasketOfApples} class to get this test to pass.
-//     */
-//    @Test
-//    public void hasBasketOfApplesWeightFieldOfCorrectType() throws NoSuchFieldException {
-//        // Does the weight field exist?
-//        Field weightField = BasketOfApples.class.getDeclaredField("weight");
-//        // Is the weight field of the correct type?
-//        assertTrue(weightField.getType().isAssignableFrom(Integer.class));
-//    }
+        // getDescription メソッドを取得
+        Method getDescriptionMethod = BasketOfApples.class.getDeclaredMethod("getDescription");
+        // メソッドの戻り値の型を確認
+        assertTrue(getDescriptionMethod.getReturnType().isAssignableFrom(String.class));
+    }
 
-//    /**
-//     * Task 5.
-//     * TODO: Check to see if the BasketOfApples's farm field is included in the participants.
-//     */
-//    @Test
-//    void farmIsParticipant() throws NoSuchAlgorithmException {
-//
-//        ArrayList<PublicKey> publicKeys = new ArrayList<>();
-//
-//        KeyPair farmKeys = TestUtils.generateKey();
-//        publicKeys.add(farmKeys.getPublic());
-//
-//        KeyPair ownerKeys = TestUtils.generateKey();
-//        publicKeys.add(ownerKeys.getPublic());
-//
-//        BasketOfApples basketOfApples = new BasketOfApples( "Fuji, Aomori.",
-//                farmKeys.getPublic(), ownerKeys.getPublic(), 100);
-//
-//        /* リストに期待したオブジェクトが含まれない場合、indexOfメソッドは-1を返す. */
-//        assertNotEquals(basketOfApples.getParticipants().indexOf(farmKeys.getPublic()), -1);
-//    }
+    /**
+     * 1-2. フィールドとゲッター作成: farmer
+     */
+    @Test
+    public void hasBasketOfApplesFarmFieldOfCorrectType() throws NoSuchFieldException, NoSuchMethodException {
+        // farmer フィールドを取得
+        Field farmerField = BasketOfApples.class.getDeclaredField("farmer");
+        // フィールドの型を確認
+        assertTrue(farmerField.getType().isAssignableFrom(PublicKey.class));
 
-//    /**
-//     * Task 6.
-//     * TODO: Check to see if the AppleState's owner field is included in the participants.
-//     */
-//    @Test
-//    void ownerIsParticipant() throws NoSuchAlgorithmException {
-//
-//        ArrayList<PublicKey> publicKeys = new ArrayList<>();
-//
-//        KeyPair farmKeys = TestUtils.generateKey();
-//        publicKeys.add(farmKeys.getPublic());
-//
-//        KeyPair ownerKeys = TestUtils.generateKey();
-//        publicKeys.add(ownerKeys.getPublic());
-//
-//        BasketOfApples basketOfApples = new BasketOfApples( "Fuji, Aomori.",
-//                farmKeys.getPublic(), ownerKeys.getPublic(), 100);
-//
-//        /* リストに期待したオブジェクトが含まれない場合、indexOfメソッドは-1を返す. */
-//        assertNotEquals(basketOfApples.getParticipants().indexOf(ownerKeys.getPublic()), -1);
-//    }
+        // getFarmer メソッドを取得
+        Method getFarmerMethod = BasketOfApples.class.getDeclaredMethod("getFarmer");
+        // メソッドの戻り値の型を確認
+        assertTrue(getFarmerMethod.getReturnType().isAssignableFrom(String.class));
+    }
 
-//    /**
-//     * Task 7.
-//     * TODO: Verified that the helper method to update Owner functions correctly.
-//     */
-//    @Test
-//    void checkWithChangeOwnerHelperMethod() throws NoSuchAlgorithmException {
-//
-//        ArrayList<PublicKey> publicKeys = new ArrayList<>();
-//
-//        KeyPair farmKeys = TestUtils.generateKey();
-//        publicKeys.add(farmKeys.getPublic());
-//
-//        KeyPair ownerKeys = TestUtils.generateKey();
-//        publicKeys.add(ownerKeys.getPublic());
-//
-//        KeyPair newOwnerKeys = TestUtils.generateKey();
-//        publicKeys.add(newOwnerKeys.getPublic());
-//
-//        BasketOfApples basketOfApples = new BasketOfApples( "Fuji, Aomori.",
-//                farmKeys.getPublic(), ownerKeys.getPublic(), 100);
-//
-//        /* 鍵更新*/
-//        BasketOfApples newOwnerBasketOfApples = basketOfApples.changeOwner(newOwnerKeys.getPublic());
-//
-//        /* Ownerの鍵が更新されていることを確認。 */
-//        assertEquals(newOwnerBasketOfApples.getOwner(), newOwnerKeys.getPublic());
-//
-//        /* 他のフィールドが更新されていないことを確認。 */
+    /**
+     * 1-3. フィールドとゲッター作成: owner
+     */
+    @Test
+    public void hasBasketOfApplesOwnerFieldOfCorrectType() throws NoSuchFieldException, NoSuchMethodException {
+        // owner フィールドを取得
+        Field ownerField = BasketOfApples.class.getDeclaredField("owner");
+        // フィールドの型を確認
+        assertTrue(ownerField.getType().isAssignableFrom(PublicKey.class));
+
+        // getOwner メソッドを取得
+        Method getOwnerMethod = BasketOfApples.class.getDeclaredMethod("getOwner");
+        // メソッドの戻り値の型を確認
+        assertTrue(getOwnerMethod.getReturnType().isAssignableFrom(PublicKey.class));
+    }
+
+    /**
+     * 1-4. フィールドとゲッター作成: weight
+     */
+    @Test
+    public void hasBasketOfApplesWeightFieldOfCorrectType() throws NoSuchFieldException, NoSuchMethodException {
+        // weight フィールドを取得
+        Field weightField = BasketOfApples.class.getDeclaredField("weight");
+        // フィールドの型を確認
+        assertTrue(weightField.getType().isAssignableFrom(Integer.class));
+
+        // getWeight メソッドを取得
+        Method getWeightMethod = BasketOfApples.class.getDeclaredMethod("getWeight");
+        // メソッドの戻り値の型を確認
+        assertTrue(getWeightMethod.getReturnType().isAssignableFrom(int.class));
+    }
+
+    /**
+     * 2-1. getParticipantsの実装: 結果にfarmerが含まれていることをチェック
+     */
+    @Test
+    void farmIsParticipant() throws NoSuchAlgorithmException {
+
+        PublicKey farmerKey = testKeyUtils.getFarmerKey();
+        PublicKey ownerKey = testKeyUtils.getOwnerKey();
+
+        BasketOfApples basketOfApples = new BasketOfApples( "This is the test Apples.",
+                farmerKey, ownerKey, 100);
+
+        /* リストに期待したオブジェクトが含まれない場合、indexOfメソッドは-1を返す. */
+        assertNotEquals(basketOfApples.getParticipants().indexOf(farmerKey), -1);
+    }
+
+    /**
+     * 2-2. getParticipantsの実装: 結果にownerが含まれていることをチェック
+     */
+    @Test
+    void ownerIsParticipant() throws NoSuchAlgorithmException {
+
+        PublicKey farmerKey = testKeyUtils.getFarmerKey();
+        PublicKey ownerKey = testKeyUtils.getOwnerKey();
+
+        BasketOfApples basketOfApples = new BasketOfApples( "This is the test Apples.",
+                farmerKey, ownerKey, 100);
+
+        /* リストに期待したオブジェクトが含まれない場合、indexOfメソッドは-1を返す. */
+        assertNotEquals(basketOfApples.getParticipants().indexOf(ownerKey), -1);
+    }
+
+    /**
+     * 2-3. changeOwnerの実装: ownerが変更されること、それ以外は変更されていないことを確認.
+     */
+    @Test
+    void checkWithChangeOwnerHelperMethod() throws NoSuchAlgorithmException {
+
+        PublicKey farmerKey = testKeyUtils.getFarmerKey();
+        PublicKey ownerKey = testKeyUtils.getOwnerKey();
+        PublicKey newOwnerKey = testKeyUtils.getNewOwnerKey();
+
+        BasketOfApples basketOfApples = new BasketOfApples( "This is the test Apples.",
+                farmerKey, ownerKey, 100);
+
+        // 所有者を owner -> newOwner に更新.
+        BasketOfApples newOwnerBasketOfApples = basketOfApples.changeOwner(newOwnerKey);
+
+        // Ownerが更新されていることを確認.
+//        assertEquals(newOwnerBasketOfApples.getOwner(), newOwnerKey);
+
+        // 他のフィールドは更新されていないことを確認.
 //        assertEquals(newOwnerBasketOfApples.getDescription(), basketOfApples.getDescription());
-//        assertEquals(newOwnerBasketOfApples.getFarm(), basketOfApples.getFarm());
+//        assertEquals(newOwnerBasketOfApples.getFarmer(), basketOfApples.getFarmer());
 //        assertEquals(newOwnerBasketOfApples.getWeight(), basketOfApples.getWeight());
-//
-//    }
+
+    }
 }
