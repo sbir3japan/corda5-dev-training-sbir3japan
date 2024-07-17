@@ -59,4 +59,10 @@ public class BasketOfApplesContract implements Contract {
 
     }
 
+    public void requireThat(boolean asserted, String errorMessage) {
+        if(!asserted) {
+            throw new CordaRuntimeException("Failed requirement: " + errorMessage);
+        }
+    }
+
 }
