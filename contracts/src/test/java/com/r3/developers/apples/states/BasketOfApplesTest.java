@@ -43,7 +43,7 @@ public class BasketOfApplesTest {
         // getFarmer メソッドを取得
         Method getFarmerMethod = BasketOfApples.class.getDeclaredMethod("getFarmer");
         // メソッドの戻り値の型を確認
-        assertTrue(getFarmerMethod.getReturnType().isAssignableFrom(String.class));
+        assertTrue(getFarmerMethod.getReturnType().isAssignableFrom(PublicKey.class));
     }
 
     /**
@@ -70,7 +70,7 @@ public class BasketOfApplesTest {
         // weight フィールドを取得
         Field weightField = BasketOfApples.class.getDeclaredField("weight");
         // フィールドの型を確認
-        assertTrue(weightField.getType().isAssignableFrom(Integer.class));
+        assertTrue(weightField.getType().isAssignableFrom(int.class));
 
         // getWeight メソッドを取得
         Method getWeightMethod = BasketOfApples.class.getDeclaredMethod("getWeight");
