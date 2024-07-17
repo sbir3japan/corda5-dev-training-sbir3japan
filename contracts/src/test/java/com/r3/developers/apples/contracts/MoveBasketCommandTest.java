@@ -1,6 +1,13 @@
 package com.r3.developers.apples.contracts;
 
-import java.security.PublicKey;
+import com.r3.developers.apples.contracts.applestamp.AppleStampContract;
+import com.r3.developers.apples.contracts.basketofapples.BasketOfApplesContract;
+import net.corda.v5.ledger.utxo.transaction.UtxoSignedTransaction;
+import org.junit.jupiter.api.Test;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 public class MoveBasketCommandTest extends CommonCommandTest {
 
@@ -10,21 +17,21 @@ public class MoveBasketCommandTest extends CommonCommandTest {
      * TransactionのInput StateとしてBasketOfApplesが含まれていない場合
      * 検証に失敗することを確認.
      */
-//    @Test
-//    public void moveTransactionMustHaveOneInputs() {
-//
-//        UtxoSignedTransaction transaction = getLedgerService()
-//                .createTransactionBuilder()
-//                .addInputStates(createAppleInputStateRef())
-//                .addOutputState(existingBasketOfApples.changeOwner(newHolderKey))
-//                .addCommand(new AppleStampContract.AppleCommands.Redeem())
-//                .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.Move())
-//                .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
-//                .addSignatories(List.of(aliceKey, daveKey))
-//                .toSignedTransaction();
-//
-//        assertFailsWith(transaction, "Failed requirement: This transaction should include one BasketOfApples input state.");
-//    }
+    @Test
+    public void moveTransactionMustHaveOneInputs() {
+
+        UtxoSignedTransaction transaction = getLedgerService()
+                .createTransactionBuilder()
+                .addInputStates(createAppleInputStateRef())
+                .addOutputState(existingBasketOfApples.changeOwner(daveKey))
+                .addCommand(new AppleStampContract.AppleCommands.Redeem())
+                .addCommand(new BasketOfApplesContract.Move())
+                .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
+                .addSignatories(List.of(aliceKey, daveKey))
+                .toSignedTransaction();
+
+        assertFailsWith(transaction, "Failed requirement: This transaction should include one BasketOfApples input state.");
+    }
 
     /**
      * 2-②
@@ -39,7 +46,7 @@ public class MoveBasketCommandTest extends CommonCommandTest {
 //                .createTransactionBuilder()
 //                .addInputStates(createAppleInputStateRef(), createBasketOfApplesStateRef())
 //                .addCommand(new AppleStampContract.AppleCommands.Redeem())
-//                .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.Move())
+//                .addCommand(new BasketOfApplesContract.Move())
 //                .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
 //                .addSignatories(List.of(aliceKey, daveKey))
 //                .toSignedTransaction();
@@ -57,9 +64,9 @@ public class MoveBasketCommandTest extends CommonCommandTest {
 //        UtxoSignedTransaction transaction = getLedgerService()
 //                .createTransactionBuilder()
 //                .addInputStates(createBasketOfApplesStateRef())
-//                .addOutputState(existingBasketOfApples.changeOwner(newHolderKey))
+//                .addOutputState(existingBasketOfApples.changeOwner(daveKey))
 //                .addCommand(new AppleStampContract.AppleCommands.Redeem())
-//                .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.Move())
+//                .addCommand(new BasketOfApplesContract.Move())
 //                .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
 //                .addSignatories(List.of(aliceKey, daveKey))
 //                .toSignedTransaction();
@@ -79,15 +86,15 @@ public class MoveBasketCommandTest extends CommonCommandTest {
 //        UtxoSignedTransaction transaction = getLedgerService()
 //                .createTransactionBuilder()
 //                .addInputStates(createOtherAppleInputStateRef(), createBasketOfApplesStateRef())
-//                .addOutputState(existingBasketOfApples.changeOwner(newHolderKey))
+//                .addOutputState(existingBasketOfApples.changeOwner(daveKey))
 //                .addCommand(new AppleStampContract.AppleCommands.Redeem())
-//                .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.Move())
+//                .addCommand(new BasketOfApplesContract.Move())
 //                .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
 //                .addSignatories(List.of(aliceKey, daveKey))
 //                .toSignedTransaction();
 //
 //        assertFailsWith(transaction, "Failed requirement: The issuer of the Apple stamp should be the producing farm " +
-//                "of this basket of apple");
+//                "of this basket of apple.");
 //    }
 
     /**
@@ -104,7 +111,7 @@ public class MoveBasketCommandTest extends CommonCommandTest {
 //                .addInputStates(createAppleInputStateRef(), createBasketOfApplesStateRef())
 //                .addOutputState(existingBasketOfApples)
 //                .addCommand(new AppleStampContract.AppleCommands.Redeem())
-//                .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.Move())
+//                .addCommand(new BasketOfApplesContract.Move())
 //                .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
 //                .addSignatories(List.of(aliceKey, daveKey))
 //                .toSignedTransaction();
