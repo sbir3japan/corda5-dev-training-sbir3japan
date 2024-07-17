@@ -1,0 +1,36 @@
+----- VNode data -----
+Alice's Holding identity short hash ->
+Dave's X500 Name                    ->
+
+----- CreateAndIssueAppleStampFlow JSON -----
+{
+    "clientRequestId": "create-and-issue-apple-stamp1",
+    "flowClassName": "",
+    "requestBody": {
+        "stampDescription": "This is AppleStamp for Dave",
+        "holder": "CN=Dave, OU=Test Dept, O=R3, L=London, C=GB"
+    }
+}
+
+----- PackageApplesFlow JSON -----
+{
+    "clientRequestId": "package-apples1",
+    "flowClassName": "",
+    "requestBody": {
+        "appleDescription": "This is Basket of Apples for Dave",
+        "weight": 300
+    }
+}
+
+----- RedeemApplesFlow JSON -----
+{
+    "clientRequestId": "redeem-apples1",
+    "flowClassName": "",
+    "requestBody": {
+        "buyer": "",
+        "stampId": ""
+    }
+}
+
+----- memo -----
+stampId ->
