@@ -7,8 +7,6 @@ import java.util.UUID;
 public class RedeemApplesRequest {
 
     private MemberX500Name buyer;
-    private MemberX500Name notary;
-
     private UUID stampId;
 
     // The JSON Marshalling Service, which handles serialisation, needs this constructor.

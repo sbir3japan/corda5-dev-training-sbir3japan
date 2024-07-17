@@ -60,7 +60,6 @@ public class PackageApplesFlow implements ClientStartableFlow {
                 weight
         );
 
-        // トランザクションの作成
         UtxoSignedTransaction transaction = utxoLedgerService.createTransactionBuilder()
                 .setNotary(notaryInfo.getName())
                 .addOutputState(basket)

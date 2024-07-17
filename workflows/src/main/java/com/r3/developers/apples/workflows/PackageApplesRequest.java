@@ -5,8 +5,6 @@ import net.corda.v5.base.types.MemberX500Name;
 public class PackageApplesRequest {
 
     private String appleDescription;
-    private MemberX500Name notary;
-
     private int weight;
 
     // The JSON Marshalling Service, which handles serialisation, needs this constructor.
