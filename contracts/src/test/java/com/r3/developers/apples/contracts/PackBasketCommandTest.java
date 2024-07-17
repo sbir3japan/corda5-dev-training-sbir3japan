@@ -4,9 +4,6 @@ import java.security.PublicKey;
 
 public class PackBasketCommandTest extends CommonCommandTest {
 
-    PublicKey aliceKey;
-    PublicKey daveKey;
-
     /**
      * 1-⓪
      * BasketOfApplesのContractのフレームワークとして以下が実装されていることを確認。

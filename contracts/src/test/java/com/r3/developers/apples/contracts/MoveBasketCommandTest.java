@@ -4,9 +4,6 @@ import java.security.PublicKey;
 
 public class MoveBasketCommandTest extends CommonCommandTest {
 
-    PublicKey aliceKey;
-    PublicKey daveKey;
-
     /**
      * 2-①
      * BasketOfApplesのMoveコマンドにおいて、
