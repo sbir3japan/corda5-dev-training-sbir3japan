@@ -16,9 +16,6 @@ import java.util.UUID;
 
 public class CommonCommandTest extends ContractTest {
 
-    PublicKey aliceKey;
-    PublicKey daveKey;
-
     // 正常なAppleStampのOutputState
     AppleStamp appleStampOutputState = new AppleStamp(
             UUID.randomUUID(),

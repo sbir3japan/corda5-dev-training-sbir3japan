@@ -13,9 +13,6 @@ import java.util.List;
 
 public class AppleRedeemCommandTest extends CommonCommandTest {
 
-    PublicKey aliceKey;
-    PublicKey daveKey;
-
     /**
      * AppleStampのRedeemコマンドにおいて、TransactionのInput StateとしてAppleStampが複数含まれてる場合、検証に失敗することを確認。
      */

@@ -12,9 +12,6 @@ import java.util.List;
 
 public class AppleIssueCommandTest extends CommonCommandTest {
 
-    PublicKey aliceKey;
-    PublicKey daveKey;
-
     /**
      * AppleStampのContractのフレームワークとして以下が実装されていることを確認します。
      * ①: Exceptionメッセージのテンプレート"Failed Requirement: "が実装されていることを確認
