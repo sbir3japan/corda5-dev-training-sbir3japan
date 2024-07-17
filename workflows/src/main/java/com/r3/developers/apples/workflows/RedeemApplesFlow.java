@@ -112,7 +112,8 @@ public class RedeemApplesFlow implements ClientStartableFlow {
         FlowSession session = flowMessaging.initiateFlow(buyerName);
 
         try {
-            return utxoLedgerService.finalize(transaction, List.of(session)).getTransaction().getId().toString();
+            String transactionId = utxoLedgerService.finalize(transaction, List.of(session)).getTransaction().getId().toString();
+            return jsonMarshallingService.format(new RedeemApplesResponse(transactionId, memberLookup.myInfo().getName().getCommonName(), buyerName.getCommonName()));
         } catch (Exception e) {
             return String.format("Flow failed, message: %s", e.getMessage());
         }
