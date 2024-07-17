@@ -36,19 +36,19 @@ public class BasketOfApples implements ContractState {
 
     // 実装1-②. getterを追加してください
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public PublicKey getFarmer() {
-        return farmer;
+        return this.farmer;
     }
 
     public PublicKey getOwner() {
-        return owner;
+        return this.owner;
     }
 
     public int getWeight() {
-        return weight;
+        return this.weight;
     }
 
     @Override
