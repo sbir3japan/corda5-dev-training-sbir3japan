@@ -108,7 +108,7 @@ public class CreateAndIssueAppleStampFlow implements ClientStartableFlow {
             utxoLedgerService.finalize(transaction, List.of(session));
 
             // ⑧ 返り値の構築
-            return newStamp.getId().toString();
+            return "stampId: " + newStamp.getId().toString();
         } catch (Exception e) {
             return String.format("Flow failed, message: %s", e.getMessage());
         }
