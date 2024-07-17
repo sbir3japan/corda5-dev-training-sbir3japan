@@ -13,10 +13,8 @@ import java.util.List;
 public class AppleIssueCommandTest extends CommonCommandTest {
 
     /**
-     * AppleStampのContractのフレームワークとして以下が実装されていることを確認します。
-     * ①: Exceptionメッセージのテンプレート"Failed Requirement: "が実装されていることを確認
-     * ②: BasketOfApplesCommandsオブジェクトの取得、設定
-     * ③: Commandごとに処理を振り分けて期待しない種類のCommandsの場合、検証に失敗することを確認。
+     * AppleStampのContractのフレームワークがCommandごとに処理を振り分けて、
+     * 期待しない種類のCommandsの場合、検証に失敗することを確認。
      */
     @Test
     public void setupContractFramework() {
@@ -75,6 +73,7 @@ public class AppleIssueCommandTest extends CommonCommandTest {
 
     /**
      * AppleStampのCreateコマンドにおいて、AppleStampのStampDescが空白の場合、検証に失敗することを確認。
+     * さらに、Exceptionメッセージのテンプレート"Failed Requirement: "が実装されていることを確認。
      */
     @Test
     public void mustIncludeSomeCommentsInStampDesc() {
