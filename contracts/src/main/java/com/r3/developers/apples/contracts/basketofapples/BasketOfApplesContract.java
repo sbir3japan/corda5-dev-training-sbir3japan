@@ -11,18 +11,18 @@ import java.util.List;
 
 public class BasketOfApplesContract implements Contract {
 
-    public interface BasketOfApplesContractCommand extends Command { }
+    public interface BasketOfApplesContractCommands extends Command { }
 
-    public static class PackBasket implements BasketOfApplesContractCommand { }
-    public static class Move implements BasketOfApplesContractCommand { }
+    public static class PackBasket implements BasketOfApplesContractCommands { }
+    public static class Move implements BasketOfApplesContractCommands { }
 
     @Override
     public void verify(UtxoLedgerTransaction transaction) {
 
-        List<? extends BasketOfApplesContractCommand> commands = transaction
-                .getCommands(BasketOfApplesContractCommand.class);
+        List<? extends BasketOfApplesContractCommands> commands = transaction
+                .getCommands(BasketOfApplesContractCommands.class);
 
-        for (BasketOfApplesContractCommand command : commands) {
+        for (BasketOfApplesContractCommands command : commands) {
             if (command instanceof PackBasket) verifyPackBasket(transaction);
             else if (command instanceof Move) verifyMove(transaction);
             else throw new IllegalStateException("Unrecognised command type.");
