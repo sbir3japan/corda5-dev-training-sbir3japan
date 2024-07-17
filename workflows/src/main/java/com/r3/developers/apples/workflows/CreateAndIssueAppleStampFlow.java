@@ -107,6 +107,8 @@ public class CreateAndIssueAppleStampFlow implements ClientStartableFlow {
             // ⑦ 通信 & 署名 & Notary & 格納
             utxoLedgerService.finalize(transaction, List.of(session));
 
+            log.info("CreateAndIssueAppleStampFlow completed.");
+
             // ⑧ 返り値の構築
             return "stampId: " + newStamp.getId().toString();
         } catch (Exception e) {
