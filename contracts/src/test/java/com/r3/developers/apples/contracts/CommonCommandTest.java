@@ -3,7 +3,9 @@ package com.r3.developers.apples.contracts;
 import com.r3.corda.ledger.utxo.testing.ContractTest;
 import com.r3.developers.apples.TestKeyUtils;
 import com.r3.developers.apples.contracts.applestamp.AppleStampContract;
+import com.r3.developers.apples.contracts.basketofapples.BasketOfApplesContract;
 import com.r3.developers.apples.states.AppleStamp;
+import com.r3.developers.apples.states.BasketOfApples;
 import net.corda.v5.base.types.MemberX500Name;
 import net.corda.v5.ledger.utxo.StateRef;
 import net.corda.v5.ledger.utxo.transaction.UtxoSignedTransaction;
@@ -86,49 +88,49 @@ public class CommonCommandTest extends ContractTest {
         return new StateRef(existingTransaction.getId(), 0);
     }
 
-    //    BasketOfApples basketOfApplesOutputState = new BasketOfApples(
-//            "This is the basket of apple for the test",
-//            aliceKey,
-//            aliceKey,
-//            100
-//    );
+        BasketOfApples basketOfApplesOutputState = new BasketOfApples(
+            "This is the basket of apple for the test",
+            aliceKey,
+            aliceKey,
+            100
+    );
 
-//    BasketOfApples basketOfApplesBlankDesc = new BasketOfApples(
-//            "",
-//            aliceKey,
-//            aliceKey,
-//            100
-//    );
+    BasketOfApples basketOfApplesBlankDesc = new BasketOfApples(
+            "",
+            aliceKey,
+            aliceKey,
+            100
+    );
 
-//    BasketOfApples basketOfApplesInvalidWeight = new BasketOfApples(
-//            "This is the basket of apple for the test",
-//            aliceKey,
-//            aliceKey,
-//            -1
-//    );
+    BasketOfApples basketOfApplesInvalidWeight = new BasketOfApples(
+            "This is the basket of apple for the test",
+            aliceKey,
+            aliceKey,
+            -1
+    );
 
-//    BasketOfApples existingBasketOfApples = new BasketOfApples(
-//            "This is the apple stamp that is already existed in the ledger",
-//            aliceKey,
-//            aliceKey,
-//            100
-//    );
+    BasketOfApples existingBasketOfApples = new BasketOfApples(
+            "This is the apple stamp that is already existed in the ledger",
+            aliceKey,
+            aliceKey,
+            100
+    );
 
     /**
      * BasketOfApplesのOutputStateの構築をします。
      */
-//    StateRef createBasketOfApplesStateRef() {
-//
-//        UtxoSignedTransaction existingTransaction = getLedgerService()
-//                .createTransactionBuilder()
-//                .addOutputState(existingBasketOfApples)
-//                .addCommand(new BasketOfApplesContract.BasketOfApplesCommands.PackBasket())
-//                .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
-//                .addSignatories(List.of(aliceKey, aliceKey))
-//                .toSignedTransaction();
-//
-//        /* TxのOutput Stateが1つなので、indexを0でかえす */
-//        return new StateRef(existingTransaction.getId(), 0);
-//    }
+    StateRef createBasketOfApplesStateRef() {
+
+        UtxoSignedTransaction existingTransaction = getLedgerService()
+                .createTransactionBuilder()
+                .addOutputState(existingBasketOfApples)
+                .addCommand(new BasketOfApplesContract.PackBasket())
+                .setTimeWindowUntil(Instant.now().plus(1, ChronoUnit.DAYS))
+                .addSignatories(List.of(aliceKey))
+                .toSignedTransaction();
+
+        /* TxのOutput Stateが1つなので、indexを0でかえす */
+        return new StateRef(existingTransaction.getId(), 0);
+    }
 
 }
