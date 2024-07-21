@@ -2,7 +2,7 @@
 
 ## ハンズオン環境
 ### トレーニング環境EC2に接続する
-ssh -p **sshポート** corda @**外部公開アドレス**
+ssh -i aws-sshkey-corda-trg02.pem -p **sshポート** corda@　**外部公開アドレス**
 
 ### Kubernetes のクラスタの切り替え
 aws eks update-kubeconfig --name **eks-cluster** --region ap-northeast-2
