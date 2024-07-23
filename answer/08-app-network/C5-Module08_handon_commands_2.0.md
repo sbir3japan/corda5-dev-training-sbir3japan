@@ -24,6 +24,9 @@ ls -l
 ./registerNewMGM.sh
 CPIの名前をランダムに付与します。CPIの種類を番号で選択してください。1: node, 2: notary, 3: mgm >> # 「3」を選択してEnter
 デフォルトで設定されているCPIバージョンは1.0.0.0-SNAPSHOTです。変更したい場合は、入力してください。そのままで良い場合は、未入力でEnterを押下してください。 # 未入力でEnter
+Certificate stored in file </home/corda/training/register_tool/scripts/main/../../files/pem/signingkey1.pem>
+Certificate stored in file </home/corda/training/register_tool/scripts/main/../../files/pem/gradle-plugin-default-key.pem>
+Certificate stored in file </home/corda/training/register_tool/scripts/main/../../files/pem/digicert-ca.pem>
 仮想Node名を設定してください。各属性間の間は空白を設けないでください。設定例: C=GB,L=London,O=MGM >>  >> # 「C=GB,L=London,O=MGM」を入力してEnter
 ```
 
