@@ -280,7 +280,7 @@ password:
 
 ### Webブラウザでアクセス
 
-https://x.x.x.x:8888/api/v1/swagger
+https://x.x.x.x:8888/api/v5_2/swagger
 
 ### logの確認(XXXXXXXXXX-XXXXXは get pods コマンドで取得したものを使用してください)
 
