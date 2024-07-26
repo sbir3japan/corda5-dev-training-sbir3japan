@@ -55,7 +55,7 @@ helm show readme corda-enterprise.tar
 helm show values corda-enterprise.tar
 ```
 
-## Cluster構築
+## Corda cluster構築準備
 
 ### Secretファイルの確認
 
@@ -229,7 +229,7 @@ kafka-topics.sh --list --bootstrap-server kafka.corda-cluster1.svc.cluster.local
 
 ---
 
-## Cluster 起動
+## Corda cluster 構築
 
 ### vim で values.yaml を開く
 
@@ -237,7 +237,7 @@ kafka-topics.sh --list --bootstrap-server kafka.corda-cluster1.svc.cluster.local
 vim values.yaml
 ```
 
-### Cluster 実行
+### Corda cluster 起動
 
 ```bash
 helm install corda corda-enterprise.tar -f ./values.yaml
@@ -251,7 +251,7 @@ kubectl get pods
 
 ---
 
-## Cluster アクセス
+## Corda cluster アクセス
 
 ### Webブラウザで Corda cluster にアクセス(REST APIコードのたびに標準出力がでるのが気になる場合は、もう一つターミナルを立ち上げて実行してください)
 
