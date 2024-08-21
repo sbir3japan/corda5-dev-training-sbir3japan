@@ -42,10 +42,14 @@ kubectl config view --minify | grep namespace:
 
 ## Corda Helm Chart
 
+### 作業ディレクトリの移動
+```bash
+cd /home/corda/training
+```
+
 ### Chartパラメータの確認方法(readme)
 
 ```bash
-cd /home/corda/training
 helm show readme corda-enterprise.tar
 ```
 
@@ -199,7 +203,9 @@ export PGPASSWORD=$(kubectl get secret my-secret -o jsonpath="{.data.postgrespas
 上の例の場合↓
 
 ```bash
-kubectl port-forward --namespace corda-cluster1 svc/postgres-postgresql 5432:5432 &
+kubectl port-forward --namespace **namespace** svc/postgres-postgresql 5432:5432 &
+```
+```bash
 psql --host 127.0.0.1 -d cordacluster -p 5432
 ```
 
@@ -216,15 +222,16 @@ exit
 上の例の場合↓
 
 ```bash
-kubectl port-forward --namespace corda-cluster1 svc/postgres-postgresql 5432:5432 &
-psql --host 127.0.0.1 -d cordacluster -p 5432
+kubectl run kafka-client --restart='Never' --image docker.io/bitnami/kafka:3.2.3-debian-11-r1 --namespace **namespace** --command -- sleep infinity
+```
+```bash
+kubectl exec --tty -i kafka-client --namespace **namespace** -- bash
 ```
 
-上記が正常終了している場合、起動したkafka clientのdocker containerにログインできていますので、続けて以下のコマンドを実行します。
-
+上記が正常終了している場合、起動したkafka clientのdocker containerにログインできていますので、続けて以下のコマンドを実行します。  
+「**namespace**」部分は自分のnamespaceの名前に差し替えてください。
 ```bash
-# 「corda-cluster1」は自分のnamespaceの名前に差し替えてください。
-kafka-topics.sh --list --bootstrap-server kafka.corda-cluster1.svc.cluster.local:9092
+kafka-topics.sh --list --bootstrap-server kafka.**namespace**.svc.cluster.local:9092
 ```
 
 ---
